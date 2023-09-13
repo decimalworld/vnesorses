@@ -1,0 +1,32 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./frontend
+    stdin_open: true
+    tty: true
+    volumes:  
+      - ./frontend:/frontend
+    ports:
+      - 8080:8080
+    command: sh -c "npm run serve"
+  backend:
+    build:
+      context: ./backend
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./backend:/backend
+    ports:
+      - 3000:3000
+    command: sh -c "rm -rf /backend/tmp/pids/server.pid &&
+                    rails s -p 3000 -b '0.0.0.0'"
+    depends_on:
+      - db
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgres/data
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: password

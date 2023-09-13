@@ -1,0 +1,27 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: images
+#
+#  id         :uuid             not null, primary key
+#  blog_id    :uuid
+#  type       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+FactoryBot.define do
+  factory :image do
+    blog
+    type { nil }
+    trait :cover do
+      type { Images::Cover.name }
+    end
+
+    trait :body do
+      type { Images::Body.name }
+    end
+
+    initialize_with { type.present? ? type.constantize.new : Image.new }
+  end
+end
