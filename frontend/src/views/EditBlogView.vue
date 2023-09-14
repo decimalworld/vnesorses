@@ -1,14 +1,20 @@
 <template>
   <div class="edit-blog-view">
     <div class="edit-blog">
+      <div class="cover-group">
+        <label for="blog-photo" class="clickable upload-button">Upload Cover Photo</label>
+        <input type="file" id="blog-photo" ref="blogPhoto" accept=".png, .jpg, .jpeg" @change="fileChange">
+        <span>File Chosen: {{ coverChosen }}</span>
+      </div>
       <div class="title-group">
-        <input type="text" placeholder="Enter Blog Title" v-model="blogTitle"/>
-        <div class="upload-file">
-          <label for="blog-photo" class="clickable">Upload Cover Photo</label>
-          <input type="file" id="blog-photo" ref="blogPhoto" accept=".png, .jpg, .jpeg" @change="fileChange">
-          <div :class="coverChosen ? 'clickable' : 'inactive'">Preview Photo</div>
-          <span>File Chosen: {{ coverChosen }}</span>
-        </div>
+        <textarea 
+          placeholder="Enter Blog Title" 
+          v-model="blogTitle" 
+          class="title"
+          ref="title"
+          rows="1"
+          @input="resizTitle"
+        />
       </div>
       <VueEditor 
         v-model="blogContent" 
@@ -77,6 +83,13 @@ export default {
       this.cover = this.$refs.blogPhoto.files[0];
       this.coverUrl = URL.createObjectURL(this.cover);
       this.coverChosen = this.cover.name;
+    },
+    resizTitle() {
+      let element = this.$refs['title'];
+      
+      element.style.height = "auto";
+      element.rows = 1;
+      element.style.height = `${element.scrollHeight}px` ;
     },
     async uploadCover(signed_url) {
       if (this.coverUrl)
@@ -160,8 +173,26 @@ export default {
       }
     }
   
+    .cover-group {
+      display: flex;
+      width: 100%;
+      .upload-button {
+        width: 200px;
+      }
+      input {
+        display: none;
+      }
+      span {
+        width: 100%;
+        text-align: start;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: auto 15px;
+      }
+    }
+
     .title-group {
-      height: 50px;
       width: 100%;
       align-items: start;
       display: flex;
@@ -170,15 +201,20 @@ export default {
         width: 100px;
         min-width: 100px;
       }
-      
-      input {
-        width: 180px;
-        height: 25px;
+
+      .title {
+        width: 100%;
+        height: auto;
+        font-weight: bold;
+        font-size: 32px;
+        overflow-wrap: break-word;
+        min-width: 180px;
         border: none;
         transition: .5s ease-in-out all;
-        padding: 10px 4px;
+        padding: 10px 5px 4px 4px;
         border-bottom: 1px solid #303030;
-  
+        resize: none;
+
         &:focus{
           outline: none;
           box-shadow: 0 1px 0 0 #303030;
@@ -196,10 +232,6 @@ export default {
         margin: auto 10px;
       }
   
-      input {
-        display: none;
-      }
-  
       .inactive {
         background-color: #aaa;
         color: white;
@@ -209,14 +241,6 @@ export default {
         align-items: center;
         display: flex;
         border-radius: 20px;
-      }
-
-      span {
-        width: 180px;
-        text-align: start;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
     }
     .router-group {
