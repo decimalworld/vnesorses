@@ -1,3 +1,3 @@
 class Default
-  IMAGE_REGEX = /<img src=["'](.+?)["']\s*(width=["'](.+?)['"])?>/
+  PARAGRAPH_REGEX = /<p[^\/]*\/p>/
 end

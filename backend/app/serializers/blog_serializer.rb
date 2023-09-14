@@ -11,7 +11,7 @@
 #  updated_at :datetime         not null
 #
 class BlogSerializer < ActiveModel::Serializer
-  attributes :id, :title, :body
+  attributes :id, :title, :summary, :body
   has_one :cover
   has_many :images
 end

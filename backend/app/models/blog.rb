@@ -17,6 +17,21 @@ class Blog < ApplicationRecord
   validates :title, presence: true, on: :update
   validates :body, presence: true, on: :update
 
+  def summary
+    (body || '')
+      .then(&CGI.method(:unescapeHTML))
+      .match(::Default::PARAGRAPH_REGEX)
+      .then(&ERB::Util.method(:html_escape))
+  end
+
+  def title=(value)
+    super(ERB::Util.html_escape(value))
+  end
+
+  def body=(value)
+    super(ERB::Util.html_escape(value))
+  end
+
   def generate_signed_url
     cover.generate_signed_url
     images.each(&:generate_signed_url)

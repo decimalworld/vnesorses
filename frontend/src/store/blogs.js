@@ -1,4 +1,5 @@
 import axios from "axios"
+import { PARAGRAPH_REGEX, IMAGE_REGEX } from "@/constants"
 
 const state = {
   currentBlog: {
@@ -20,6 +21,8 @@ const getters = {
   getBlogTitle: state => state.currentBlog.title,
   getBlogCover: state => state.currentBlog.cover,
   getBlogBody: state => state.currentBlog.body,
+  getBlogSummary: state => state.currentBlog.body.match(PARAGRAPH_REGEX)?.groups?.content,
+  getBlogImages: state => [...state.currentBlog.body.matchAll(IMAGE_REGEX)].map(img => img.groups.src)
 }
 
 const actions = {
@@ -35,7 +38,7 @@ const actions = {
   setBlogBody({ commit }, body) {
     commit('setBlogBody', body)
   },
-  saveBlog({ commit, state }, id) {
+  saveBlog({ state }, id) {
     const url = `${process.env.VUE_APP_BACKEND_URL}/blogs/${id}`
     axios.request({
       method: 'patch',
@@ -48,7 +51,7 @@ const actions = {
     .then(res => console.log(res))
     .catch(error => console.log(error))
   },
-  createBlog({ commit }, body_image_count) {
+  createBlog({}, body_image_count) {
     return axios
     .request({
       method: 'post',
@@ -57,6 +60,13 @@ const actions = {
         body_image_count: body_image_count
       }
     })
+  },
+  clearBlog({ state }) {
+    state.currentBlog = {
+      title: '',
+      cover: '',
+      body: '',
+    }
   }
 }
 

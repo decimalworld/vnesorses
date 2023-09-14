@@ -82,6 +82,7 @@ GEM
     base64 (0.1.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
+    brakeman (6.0.1)
     builder (3.2.4)
     case_transform (0.2)
       activesupport
@@ -311,6 +312,7 @@ DEPENDENCIES
   activerecord-import
   annotate
   bootsnap
+  brakeman
   debug
   factory_bot_rails
   faker

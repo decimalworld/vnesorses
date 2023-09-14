@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BlogsController < ApplicationController
+  include ERB::Util
+
   def create
     blog = Blog.create
     Image.import(

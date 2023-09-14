@@ -1,5 +1,6 @@
 <template>
   <Loading v-if="loading"/>
+  <Preview v-if="preview"/>
   <Navbar/>
   <div class="container">
     <router-view class="content"/>
@@ -12,11 +13,12 @@ import { mapGetters } from 'vuex';
 import Navbar from './components/Navbar.vue';
 import Footer from './components/footer/Footer.vue';
 import Loading from './components/Loading.vue';
+import Preview from './components/Preview.vue'
 export default {
   name: "App",
-  components: { Navbar, Footer, Loading },
+  components: { Navbar, Footer, Loading, Preview },
   computed: {
-    ...mapGetters(['loading'])
+    ...mapGetters(['loading', 'preview'])
   }
 }
 </script>

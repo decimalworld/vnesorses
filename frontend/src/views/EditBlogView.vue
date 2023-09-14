@@ -23,6 +23,12 @@
     
       </VueEditor>
       <div class="router-group">
+        <div 
+          :class="`clickable ${cover ? '' : 'inactive'}`"
+          @click="cover && togglePreview()"  
+        >
+          Preview Cover
+        </div>
         <div class="clickable" @click="publish">
           Publish Blog
         </div>
@@ -39,7 +45,6 @@
 import Quill from 'quill';
 import reducer from 'image-blob-reduce';
 import { mapActions, mapGetters } from 'vuex';
-import { IMAGE_REGEX } from '../constants/index';
 
 window.Quill = Quill;
 const ImageResize = require('quill-image-resize-module').default;
@@ -77,8 +82,22 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setBlogTitle', 'setBlogBody', 'setBlogCover', 'toggleLoading', 'saveBlog', 'createBlog']),
-    ...mapGetters(['getBlogTitle', 'getBlogBody', 'getBlogCover']),
+    ...mapActions([
+      'setBlogTitle', 
+      'setBlogBody', 
+      'setBlogCover', 
+      'toggleLoading', 
+      'saveBlog',
+      'createBlog',
+      'togglePreview',
+      'clearBlog'
+    ]), ...mapGetters([
+      'getBlogTitle', 
+      'getBlogBody', 
+      'getBlogCover',
+      'getBlogImages',
+      'getBlogSummary'
+    ]),
     fileChange() {
       this.cover = this.$refs.blogPhoto.files[0];
       this.coverUrl = URL.createObjectURL(this.cover);
@@ -133,7 +152,7 @@ export default {
     },
     async publish() {
       this.toggleLoading();
-      const images = [...this.blogContent.matchAll(IMAGE_REGEX)].map(img => img.groups.src);
+      const images = this.getBlogImages();
       const response = await this.createBlog(images.length);
       await Promise.all([
         this.uploadCover(response.data.cover.signed_url),
@@ -141,6 +160,7 @@ export default {
       ])
       await this.saveBlog(response.data.id);
       this.toggleLoading();
+      this.clearBlog();
       this.$router.push({ name: 'home' })
     },
   }
@@ -221,17 +241,13 @@ export default {
         }
       }
     }
-  
-    .upload-file {
-      flex: 1;
-      margin: auto 0;
-      margin-left: 16px;
-      position: relative;
+    .router-group {
       display: flex;
+      margin: auto;
       * {
-        margin: auto 10px;
+        width: 100px;
+        margin: 0 5px;
       }
-  
       .inactive {
         background-color: #aaa;
         color: white;
@@ -241,14 +257,6 @@ export default {
         align-items: center;
         display: flex;
         border-radius: 20px;
-      }
-    }
-    .router-group {
-      display: flex;
-      margin: auto;
-      * {
-        width: 100px;
-        margin: 0 5px;
       }
     }
   }
