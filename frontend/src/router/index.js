@@ -11,6 +11,10 @@ const routes = [
     path: '/edit-blog',
     name: 'editBlog',
     component: EditBlogView
+  }, {
+    path: '/:category',
+    name: 'category',
+    component: HomeView
   }
 ]
 

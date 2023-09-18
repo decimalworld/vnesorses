@@ -1,0 +1,8 @@
+.env
+.git*
+.rspec*
+Dockerfile
+README.md
+/credentials
+/log
+/tmp

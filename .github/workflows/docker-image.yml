@@ -1,0 +1,52 @@
+name: Docker Image CI
+
+on: [push, pull_request]
+
+env:
+  TEST_TAG: vnesorses/backend:test
+  LATEST_TAG: vnesorses/backend:latest
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2'
+    - name: Build the Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./backend/
+        load: true
+        tags: ${{ env.TEST_TAG }}
+        build-args: |
+          RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_USERNAME=${{ secrets.DB_USERNAME }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_DEV=${{ secrets.DB_DEV }}
+          DB_TEST=${{ secrets.DB_TES }}
+    - name: Setup test
+      run: docker run ${{ env.TEST_TAG }} rails db:prepare
+    - name: Run tests
+      run: docker run ${{ env.TEST_TAG }} rspec spec
+    - name: Run linting
+      run: docker run ${{ env.TEST_TAG }} rubocop
+    - name: Run brakeman
+      run: docker run --rm ${{ env.TEST_TAG }} brakeman
+    # - name: Build and push
+    #   uses: docker/build-push-action@v5
+    #   with:
+    #     context: ./backend/
+    #     platforms: linux/amd64, linux/arm64
+    #     push: true
+    #     tags: ${{ env.LATEST_TAG }}
+    #     build-args: |
+    #       RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
+    #       DB_HOST=${{ secrets.DB_HOST }}
+    #       DB_PORT=${{ secrets.DB_PORT }}
+    #       DB_USERNAME=${{ secrets.DB_USERNAME }}
+    #       DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+    #       DB_DEV=${{ secrets.DB_DEV }}

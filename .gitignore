@@ -23,7 +23,7 @@
 
 # Ignore master key for decrypting credentials and more.
 /backend/config/master.key
-
+/backend/.env*
 
 ################## Frontend #######################
 
@@ -54,3 +54,4 @@ node_modules
 ################## Other #######################
 
 */credentials/**/*
+db/**/*

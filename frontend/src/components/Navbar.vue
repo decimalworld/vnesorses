@@ -3,8 +3,13 @@
     <div class="container">
       <Transition name="fade">
         <div v-show="scrollPosition == 0" class="label">
-          <InlineSvg :src="baseBash" class="icon"/>
-          <div class="news">Mới nhất</div>
+          <InlineSvg :src="baseBash" class="icon clickable" @click="redirectTo('home')"/>
+          <div 
+            class="news clickable"
+            @click="redirectTo('category', { params: {category: 'tin-tuc-24h'} })"
+          >
+            Mới nhất
+          </div>
         </div>
       </Transition>
       <Transition name="fade">
@@ -13,7 +18,12 @@
         </div>
       </Transition>
       <div class="categories">
-        <div v-for="(category, index) in categories" :key="index" class="category">
+        <div 
+          v-for="(category, index) in categories" 
+          :key="index" 
+          class="category clickable"
+          @click="redirectTo('category', { params: {category} })"
+        >
           {{ category }}
         </div>
         <InlineSvg :src="dropDown" class="dropdown"/>
@@ -31,6 +41,11 @@ export default {
     onScroll(e) {
       this.scrollPosition = window.scrollY;
     },
+    redirectTo(name, { params } = {}) {
+      let route = { name }
+      route = (params ? { ...route, params} : route)
+      this.$router.push(route)
+    }
   },
   data() {
     return {
@@ -68,6 +83,9 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.clickable {
+  cursor: pointer;
+}
 .nav {
   background-color: white;
   height: 50px;
