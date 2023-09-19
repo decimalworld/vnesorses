@@ -20,5 +20,9 @@ RUN apk add vim make gcc musl-dev postgresql-dev tzdata
 COPY Gemfile* /backend/
 RUN bundle install
 ADD ./ /backend/
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
 
-EXPOSE 3000
+ENTRYPOINT ["sh", "entrypoint.sh"]
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+

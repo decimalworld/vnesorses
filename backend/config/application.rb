@@ -11,7 +11,7 @@ Bundler.require(*Rails.groups)
 module Backend
   class Application < Rails::Application
     config.load_defaults 7.0
-
+    config.hosts << ENV["ALLOW_HOST"] if ENV["ALLOW_HOST"].presence
     config.api_only = true
   end
 end

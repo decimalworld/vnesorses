@@ -5,9 +5,17 @@ on: [push, pull_request]
 env:
   TEST_TAG: vnesorses/backend:test
   LATEST_TAG: vnesorses/backend:latest
+  GAR_LOCATION: asia-east1
+  GCR_LOCATION: asia-east1
+  SERVICE: backend
+  PROJECT_ID: vnesorses
+  REPOSITORY: deployment
 
 jobs:
   build-backend:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -22,12 +30,11 @@ jobs:
         tags: ${{ env.TEST_TAG }}
         build-args: |
           RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
-          DB_HOST=${{ secrets.DB_HOST }}
-          DB_PORT=${{ secrets.DB_PORT }}
-          DB_USERNAME=${{ secrets.DB_USERNAME }}
-          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          DB_DEV=${{ secrets.DB_DEV }}
-          DB_TEST=${{ secrets.DB_TES }}
+          DB_HOST=${{ secrets.DB_TEST_HOST }}
+          DB_PORT=${{ secrets.DB_TEST_PORT }}
+          DB_USERNAME=${{ secrets.DB_TEST_USERNAME }}
+          DB_PASSWORD=${{ secrets.DB_TEST_PASSWORD }}
+          DB_TEST=${{ secrets.DB_TEST }}
     - name: Setup test
       run: docker run ${{ env.TEST_TAG }} rails db:prepare
     - name: Run tests
@@ -36,17 +43,40 @@ jobs:
       run: docker run ${{ env.TEST_TAG }} rubocop
     - name: Run brakeman
       run: docker run --rm ${{ env.TEST_TAG }} brakeman
-    # - name: Build and push
-    #   uses: docker/build-push-action@v5
-    #   with:
-    #     context: ./backend/
-    #     platforms: linux/amd64, linux/arm64
-    #     push: true
-    #     tags: ${{ env.LATEST_TAG }}
-    #     build-args: |
-    #       RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
-    #       DB_HOST=${{ secrets.DB_HOST }}
-    #       DB_PORT=${{ secrets.DB_PORT }}
-    #       DB_USERNAME=${{ secrets.DB_USERNAME }}
-    #       DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-    #       DB_DEV=${{ secrets.DB_DEV }}
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      with:
+        context: ./backend/
+        tags: ${{ env.LATEST_TAG }}
+        build-args: |
+          RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
+          DB_HOST=${{ secrets.DB_DEV_HOST }}
+          DB_PORT=${{ secrets.DB_DEV_PORT }}
+          DB_USERNAME=${{ secrets.DB_DEV_USERNAME }}
+          DB_PASSWORD=${{ secrets.DB_DEV_PASSWORD }}
+          DB_DEV=${{ secrets.DB_DEV }}
+    - name: Google Auth
+      id: auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        token_format: 'access_token'
+        workload_identity_provider: 'projects/385261181840/locations/global/workloadIdentityPools/github-action/providers/github'
+        service_account: 'app-service-account@vnesorses.iam.gserviceaccount.com'
+    - name: Docker Auth
+      id: docker-auth
+      uses: 'docker/login-action@v1'
+      with:
+        username: 'oauth2accesstoken'
+        password: '${{ steps.auth.outputs.access_token }}'
+        registry: '${{ env.GAR_LOCATION }}-docker.pkg.dev'
+    - name: Build and Push Container
+      run: |-
+        docker tag ${{ env.LATEST_TAG }} "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
+        docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
+    - name: Deploy to Cloud Run
+      id: deploy
+      uses: google-github-actions/deploy-cloudrun@v0
+      with:
+        service: ${{ env.SERVICE }}
+        region: ${{ env.GCR_LOCATION }}
+        image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}
