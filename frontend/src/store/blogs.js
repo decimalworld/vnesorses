@@ -1,5 +1,5 @@
 import axios from "axios"
-import { PARAGRAPH_REGEX, IMAGE_REGEX } from "@/constants"
+import { PARAGRAPH_REGEX, IMAGE_REGEX, VUE_APP_BACKEND_URL } from "@/constants"
 
 const state = {
   currentBlog: {
@@ -39,7 +39,7 @@ const actions = {
     commit('setBlogBody', body)
   },
   saveBlog({ state }, id) {
-    const url = `${process.env.VUE_APP_BACKEND_URL}/blogs/${id}`
+    const url = `${VUE_APP_BACKEND_URL}/blogs/${id}`
     axios.request({
       method: 'patch',
       url,
@@ -55,7 +55,7 @@ const actions = {
     return axios
     .request({
       method: 'post',
-      url: `${process.env.VUE_APP_BACKEND_URL}/blogs`,
+      url: `${VUE_APP_BACKEND_URL}/blogs`,
       data: {
         body_image_count: body_image_count
       }

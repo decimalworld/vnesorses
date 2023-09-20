@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { GCLOUD_URL } from '@/constants';
+import { GCLOUD_URL, VUE_APP_ASSETS_DIR } from '@/constants';
 
 export default {
   name: 'Navbar',
@@ -49,9 +49,9 @@ export default {
   },
   data() {
     return {
-      baseBash: `${GCLOUD_URL}/${process.env.VUE_APP_ASSETS_DIR}/base_bash_icon.svg`,
-      home: `${GCLOUD_URL}/${process.env.VUE_APP_ASSETS_DIR}/home_icon.svg`,
-      dropDown: `${GCLOUD_URL}/${process.env.VUE_APP_ASSETS_DIR}/drop_down_icon.svg`,
+      baseBash: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/base_bash_icon.svg`,
+      home: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/home_icon.svg`,
+      dropDown: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/drop_down_icon.svg`,
       longLabel: true, 
       categories: [
         'Thời sự',

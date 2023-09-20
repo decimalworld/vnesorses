@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { GCLOUD_URL } from '@/constants';
+import { GCLOUD_URL, VUE_APP_ASSETS_DIR } from '@/constants';
 import License1 from './License1.vue';
 import License2 from './License2.vue';
 import License3 from './License3.vue';
@@ -38,10 +38,10 @@ export default {
   },
   data() {
     return {
-      brandName: `${GCLOUD_URL}/${process.env.VUE_APP_ASSETS_DIR}/brand_name_icon.svg`,
-      github: `${GCLOUD_URL}/${process.env.VUE_APP_ASSETS_DIR}/github_icon.svg`,
-      email: `${GCLOUD_URL}/${process.env.VUE_APP_ASSETS_DIR}/email_icon.svg`,
-      linkedin: `${GCLOUD_URL}/${process.env.VUE_APP_ASSETS_DIR}/linkedin_icon.svg`,
+      brandName: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/brand_name_icon.svg`,
+      github: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/github_icon.svg`,
+      email: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/email_icon.svg`,
+      linkedin: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/linkedin_icon.svg`,
     }
   }
 }

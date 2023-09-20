@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import EditBlogView from '../views/EditBlogView.vue';
+import { BASE_URL } from '@/constants';
 
 const routes = [
   {
@@ -19,7 +20,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(BASE_URL),
   routes
 })
 

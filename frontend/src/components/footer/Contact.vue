@@ -53,12 +53,12 @@
 </template>
 
 <script>
-import { GCLOUD_URL } from '@/constants'
+import { GCLOUD_URL, VUE_APP_ASSETS_DIR } from '@/constants'
 export default {
   name: "Contact",
   data() {
     return {
-      icon: `${ GCLOUD_URL }/${process.env.VUE_APP_ASSETS_DIR}/base_bash_icon.svg`
+      icon: `${ GCLOUD_URL }/${VUE_APP_ASSETS_DIR}/base_bash_icon.svg`
     }
   }
 }
