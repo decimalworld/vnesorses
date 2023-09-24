@@ -10,7 +10,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Navbar from './components/Navbar.vue';
+import Navbar from './components/nav/Navbar.vue';
 import Footer from './components/footer/Footer.vue';
 import Loading from './components/Loading.vue';
 import Preview from './components/Preview.vue'

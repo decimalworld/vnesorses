@@ -16,7 +16,7 @@ RSpec.describe Tag do
   let(:tag) { create(:tag) }
 
   describe 'validation' do
-    it { expect(tag).to validate_uniqueness_of(:name) }
+    it { expect(tag).to validate_uniqueness_of(:name).scoped_to(:category_id) }
   end
 
   describe 'association' do

@@ -32,6 +32,7 @@ jobs:
           DB_USERNAME=${{ secrets.DB_TEST_USERNAME }}
           DB_PASSWORD=${{ secrets.DB_TEST_PASSWORD }}
           DB_TEST=${{ secrets.DB_TEST }}
+          FRONTEND_URL=${{ secrets.FRONTEND_URL }}
     - name: Setup test
       run: docker run ${{ env.TEST_TAG }} rails db:prepare
     - name: Run tests
@@ -52,6 +53,7 @@ jobs:
           DB_USERNAME=${{ secrets.DB_DEV_USERNAME }}
           DB_PASSWORD=${{ secrets.DB_DEV_PASSWORD }}
           DB_DEV=${{ secrets.DB_DEV }}
+          FRONTEND_URL=${{ secrets.FRONTEND_URL }}
     - name: Google Auth
       id: auth
       uses: 'google-github-actions/auth@v1'

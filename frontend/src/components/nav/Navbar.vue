@@ -4,12 +4,10 @@
       <Transition name="fade">
         <div v-show="scrollPosition == 0" class="label">
           <InlineSvg :src="baseBash" class="icon clickable" @click="redirectTo('home')"/>
-          <div 
-            class="news clickable"
-            @click="redirectTo('category', { params: {category: 'tin-tuc-24h'} })"
-          >
-            Mới nhất
-          </div>
+          <Tab 
+          class="news" 
+          :category="{ name: 'Mới nhất', url: 'tin-tuc-24h'}"
+          ></Tab>
         </div>
       </Transition>
       <Transition name="fade">
@@ -18,14 +16,11 @@
         </div>
       </Transition>
       <div class="categories">
-        <div 
+        <Tab 
           v-for="(category, index) in categories" 
           :key="index" 
-          class="category clickable"
-          @click="redirectTo('category', { params: {category} })"
-        >
-          {{ category }}
-        </div>
+          :category="category">
+        </Tab>
         <InlineSvg :src="dropDown" class="dropdown"/>
       </div>
     </div>
@@ -33,10 +28,16 @@
 </template>
 
 <script>
-import { GCLOUD_URL, VUE_APP_ASSETS_DIR } from '@/constants';
+import { 
+  GCLOUD_URL, 
+  VUE_APP_ASSETS_DIR,
+  CATEGORIES 
+} from '@/constants';
+import Tab from "./Tab.vue"
 
 export default {
   name: 'Navbar',
+  components: { Tab },
   methods: {
     onScroll(e) {
       this.scrollPosition = window.scrollY;
@@ -53,26 +54,7 @@ export default {
       home: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/home_icon.svg`,
       dropDown: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/drop_down_icon.svg`,
       longLabel: true, 
-      categories: [
-        'Thời sự',
-        'Góc nhìn',
-        'Thế giới',
-        'Video',
-        'Podcasts',
-        'Kinh doanh',
-        'Bất động sản',
-        'Khoa học', 
-        'Giải trí',
-        'Thể thao',
-        'Pháp luật',
-        'Giáo dục',
-        'Sức khỏe',
-        'Đời sống',
-        'Du lịch',
-        'Số hóa',
-        'Xe',
-        'Ý kiến'
-      ],
+      categories: CATEGORIES,
       scrollPosition: 0
     }
   },
@@ -131,11 +113,6 @@ export default {
       width: 100%;
       display: flex;
       justify-content: center;
-      .category {
-        margin: auto;
-        text-align: center;
-        font-size: 13px;
-      }
       .dropdown {
         margin: auto;
         height: 30px;

@@ -43,7 +43,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_104740) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_tags_on_category_id"
-    t.index ["name"], name: "index_tags_on_name", unique: true
+    t.index ["name", "category_id"], name: "index_tags_on_name_and_category_id", unique: true
   end
 
 end
