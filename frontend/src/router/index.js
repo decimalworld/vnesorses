@@ -16,6 +16,10 @@ const routes = [
     path: '/:category',
     name: 'category',
     component: HomeView
+  }, {
+    path: '/:category/:tag',
+    name: 'tag',
+    component: HomeView
   }
 ]
 

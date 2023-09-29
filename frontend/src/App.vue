@@ -1,8 +1,10 @@
 <template>
   <Loading v-if="loading"/>
   <Preview v-if="preview"/>
+  <Toolbar></Toolbar>
   <Navbar/>
-  <div class="container">
+  <DropBar v-show="dropVisible"></DropBar>
+  <div class="container" v-show="!dropVisible">
     <router-view class="content"/>
     <Footer/>
   </div>
@@ -11,14 +13,16 @@
 <script>
 import { mapGetters } from 'vuex';
 import Navbar from './components/nav/Navbar.vue';
+import DropBar from './components/drop/DropBar.vue';
 import Footer from './components/footer/Footer.vue';
+import Toolbar from './components/Toolbar.vue';
 import Loading from './components/Loading.vue';
 import Preview from './components/Preview.vue'
 export default {
   name: "App",
-  components: { Navbar, Footer, Loading, Preview },
+  components: { Navbar, Footer, Loading, Preview, DropBar, Toolbar },
   computed: {
-    ...mapGetters(['loading', 'preview'])
+    ...mapGetters(['loading', 'preview', 'dropVisible'])
   }
 }
 </script>

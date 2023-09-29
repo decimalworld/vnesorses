@@ -2,7 +2,7 @@
   <div class="nav">
     <div class="container">
       <Transition name="fade">
-        <div v-show="scrollPosition == 0" class="label">
+        <div v-show="scrollPosition < 400" class="label">
           <InlineSvg :src="baseBash" class="icon clickable" @click="redirectTo('home')"/>
           <Tab 
           class="news" 
@@ -11,7 +11,7 @@
         </div>
       </Transition>
       <Transition name="fade">
-        <div v-show="scrollPosition != 0" class="label">
+        <div v-show="scrollPosition >= 400" class="label">
           <InlineSvg :src="home" class="icon"/>
         </div>
       </Transition>
@@ -21,7 +21,7 @@
           :key="index" 
           :category="category">
         </Tab>
-        <InlineSvg :src="dropDown" class="dropdown"/>
+        <InlineSvg :src="dropDown" class="dropdown" @click="showDrop"/>
       </div>
     </div>
   </div>
@@ -31,9 +31,10 @@
 import { 
   GCLOUD_URL, 
   VUE_APP_ASSETS_DIR,
-  CATEGORIES 
+  CATEGORIES
 } from '@/constants';
 import Tab from "./Tab.vue"
+import { mapActions } from 'vuex';
 
 export default {
   name: 'Navbar',
@@ -46,7 +47,8 @@ export default {
       let route = { name }
       route = (params ? { ...route, params} : route)
       this.$router.push(route)
-    }
+    },
+    ...mapActions(['showDrop']),
   },
   data() {
     return {
@@ -70,7 +72,7 @@ export default {
 }
 .nav {
   background-color: white;
-  height: 50px;
+  height: 48px;
   position: sticky;
   top: 0;
   margin-top: -10px;
@@ -117,6 +119,7 @@ export default {
         margin: auto;
         height: 30px;
         width: auto;
+        cursor: pointer;
       }
     }
   }
