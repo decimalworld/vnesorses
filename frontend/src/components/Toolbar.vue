@@ -42,7 +42,7 @@
         <div class="right-tab">
           <InlineSvg :src="search" class="icon"></InlineSvg>
         </div>
-        <div class="right-tab login">
+        <div class="right-tab login" @click="$emit('click-authen')">
           <InlineSvg :src="user" class="icon"></InlineSvg>
           <div class="text">Đăng nhập</div>
         </div>

@@ -8,6 +8,7 @@
           class="news" 
           :category="{ name: 'Mới nhất', url: 'tin-tuc-24h'}"
           ></Tab>
+          <div class="border"></div>
         </div>
       </Transition>
       <Transition name="fade">
@@ -78,7 +79,6 @@ export default {
   margin-top: -10px;
   border-bottom: 1px solid #ccc;
   border-top: 1px solid #ccc;
-  z-index: 1;
   .container {
     width: 90%;
     height: 100%;
@@ -106,13 +106,18 @@ export default {
         margin: auto 0;
         text-align: center;
         width: 80px;
-        border-right: 1px #909090 solid;
         font-size: 13px;
+      }
+      .border {
+        border-right: 1px #909090 solid;
+        height: 50%;
+        margin: auto;
       }
     }
     .categories {
       margin: auto 0;
       width: 100%;
+      height: 100%;
       display: flex;
       justify-content: center;
       .dropdown {

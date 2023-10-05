@@ -31,13 +31,18 @@ export default {
     width: 200px;
     display: flex;
     .text {
-      margin: auto 5px;
+      margin: auto 10px;
       text-align: start;
-      font-size: 15px;
+      font-size: 14px;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
 .shift-enter-from {
+  opacity: 0;
   top: 60px;
 }
 .shift-enter-active {

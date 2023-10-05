@@ -9,10 +9,12 @@
     @mouseover="dipslayDrop"
     @mouseleave="hideDrop"
   >
-          {{ category.name }}
+          <div class='text'>{{ category.name }}</div>
             <DropTag 
               v-show="showDrop && !dropVisible"
               :tags="category.tags"
+              @mouseover="dipslayDrop"
+              @mouseleave="hideDrop"
             ></DropTag>
   </div>
 </template>
@@ -26,7 +28,8 @@ export default {
   components: { DropTag },
   data() {
     return {
-      showDrop: false
+      showDrop: false,
+      showTimeout: null,
     }
   },
   computed: {
@@ -43,11 +46,12 @@ export default {
       this.$router.push(route)
     },
     dipslayDrop() {
-      this.showDrop = true
+      clearTimeout(this.showTimeout);
+      this.showDrop = true;
     },
     hideDrop() {
-      this.showDrop = false
-    }
+      this.showTimeout = setTimeout(() => this.showDrop = false, 10)
+    },
   }
 }
 </script>
@@ -57,7 +61,12 @@ export default {
   margin: auto;
   text-align: center;
   font-size: 13px;
+  height: 100%;
+  display: flex;
   cursor: pointer;
+  .text {
+    margin: auto;
+  }
   &:hover {
     color: rgb(0, 60, 255);
   }
