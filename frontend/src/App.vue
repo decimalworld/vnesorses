@@ -30,7 +30,7 @@ export default {
   }, 
   data() {
     return {
-      showAuthent: true
+      showAuthent: false
     }
   },
   methods: {

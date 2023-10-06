@@ -24,3 +24,5 @@ Rails/ReflectionClassName:
   Enabled: false
 RSpec/MultipleExpectations:
   Enabled: false
+Metrics/MethodLength:
+  Enabled: false
