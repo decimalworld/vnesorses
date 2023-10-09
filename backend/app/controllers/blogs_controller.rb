@@ -3,6 +3,15 @@
 class BlogsController < ApplicationController
   include ERB::Util
 
+  def show
+    render json: json_with_success(
+      current_blog,
+      {
+        serializer: BlogSerializer
+      }
+    )
+  end
+
   def create
     blog = Blog.create
     Image.import(

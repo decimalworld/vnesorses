@@ -15,7 +15,8 @@ module Users
     def respond_with(resource, opts = {})
       options = {
         **opts,
-        serializer: UserSerializer
+        serializer: UserSerializer,
+        message: 'Login successfully'
       }
       render json: json_with_success(resource, options)
     end

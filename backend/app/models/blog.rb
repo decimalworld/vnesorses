@@ -17,15 +17,28 @@ class Blog < ApplicationRecord
   validates :title, presence: true, on: :update
   validates :body, presence: true, on: :update
 
+  enum is_spotlight: {
+    spotlight: true,
+    normal: false
+  }
+
   def summary
     (body || '')
       .then(&CGI.method(:unescapeHTML))
       .match(::Default::PARAGRAPH_REGEX)
-      .then(&ERB::Util.method(:html_escape))
+      .to_s
+  end
+
+  def title
+    CGI.unescapeHTML(super || '')
   end
 
   def title=(value)
     super(ERB::Util.html_escape(value))
+  end
+
+  def body
+    CGI.unescapeHTML(super || '')
   end
 
   def body=(value)

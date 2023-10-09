@@ -15,8 +15,13 @@
 #
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
+         :confirmable,
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
   attr_reader :token
+
+  validates :email, presence: true
+  validates :email, uniqueness: true
+  before_commit :skip_confirmation_notification!
 
   def on_jwt_dispatch(token, _payload)
     @token = "Bearer #{token}"

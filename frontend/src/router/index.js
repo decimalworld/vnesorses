@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import EditBlogView from '../views/EditBlogView.vue';
+import ShowBlogView from '../views/ShowBlogView.vue';
 import { BASE_URL } from '@/constants';
 
 const routes = [
@@ -20,6 +21,10 @@ const routes = [
     path: '/:category/:tag',
     name: 'tag',
     component: HomeView
+  }, {
+    path: '/blog/:id',
+    name: 'showBlog',
+    component: ShowBlogView
   }
 ]
 

@@ -73,7 +73,7 @@ export default {
 }
 .nav {
   background-color: white;
-  height: 48px;
+  height: 55px;
   position: sticky;
   top: 0;
   margin-top: -10px;
@@ -106,7 +106,7 @@ export default {
         margin: auto 0;
         text-align: center;
         width: 80px;
-        font-size: 13px;
+        font-size: 15px;
       }
       .border {
         border-right: 1px #909090 solid;

@@ -18,7 +18,7 @@ import { mapGetters } from 'vuex';
 import Navbar from './components/nav/Navbar';
 import DropBar from './components/drop/DropBar';
 import Footer from './components/footer/Footer';
-import Toolbar from './components/Toolbar';
+import Toolbar from './components/toolbar/Toolbar';
 import Loading from './components/Loading';
 import Preview from './components/Preview';
 import Authenticate from './components/authenticate/Authenticate';
@@ -75,7 +75,8 @@ export default {
   display: flex;
   flex-direction: column;
   .content {
-    margin: 30px 0px;
+    height: auto;
+    margin: 0px 0px;
   }
 }
 </style>

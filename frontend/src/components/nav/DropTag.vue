@@ -20,7 +20,8 @@ export default {
 <style scoped lang="scss">
 .droptag {
   position: absolute;
-  top: 50px;
+  top: 55px;
+  background-color: white;
   display: grid;
   grid-template-columns: auto;
   color: #333;

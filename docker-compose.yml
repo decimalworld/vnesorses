@@ -4,12 +4,12 @@ services:
     build:
       context: ./frontend
       target: development
+    ports:
+      - 8080:8080
     stdin_open: true
     tty: true
     volumes:  
       - ./frontend:/frontend
-    ports:
-      - 8080:8080
     command: sh -c "npm run serve"
   backend:
     env_file:

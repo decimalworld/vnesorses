@@ -13,5 +13,9 @@
 class BlogSerializer < ActiveModel::Serializer
   attributes :id, :title, :summary, :body
   has_one :cover
-  has_many :images
+  has_many :images, if: :newly_created?
+
+  def newly_created?
+    object.id_previously_changed?
+  end
 end

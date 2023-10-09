@@ -113,7 +113,7 @@ export default {
     async uploadCover(signed_url) {
       if (this.coverUrl)
         this.coverUrl = await reducer()
-        .toBlob(this.cover, { max: 150 })
+        .toBlob(this.cover, { max: 250 })
         .then(blob => {
           const config = {
             method: 'put',

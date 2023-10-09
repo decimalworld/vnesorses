@@ -60,7 +60,7 @@ export default {
 .category {
   margin: auto;
   text-align: center;
-  font-size: 13px;
+  font-size: 15px;
   height: 100%;
   display: flex;
   cursor: pointer;

@@ -1,14 +1,16 @@
 <template>
-  <div class="login-view">
-    <div class="login-content">
+  <div class="signup-view">
+    <div class="signup-content">
       <div class="view-wrapper">
         <div class="title">
-          <span>Đăng nhập với email</span>
+          <div>Tạo tài khoản VnEsorses</div>
+          <div>Để sử dụng đầy đủ tính năng đọc báo và tham</div> 
+          <div>gia cộng đồng hơn 0 triệu thành viên</div>
         </div>
         <input 
           type="text" 
           class="text-input" 
-          placeholder="Email" 
+          placeholder="Nhập email"
           v-model="email" 
           @keyup="validate_email"
         />
@@ -21,11 +23,15 @@
           <input 
             :type="show_password ? 'text' : 'password'" 
             class="text-input" 
-            placeholder="Mật khẩu" 
+            placeholder="Tạo mật khẩu"
             v-model="password"
             @keyup="validate_password"
-          >
-          <InlineSvg :src="show_password ? eye_off : eye_on" class="show-icon" @click="toggle_show_password"></InlineSvg>
+          />
+          <InlineSvg 
+            :src="show_password ? eye_off : eye_on"
+            @click="toggle_show_password" 
+            class="show-icon"
+          ></InlineSvg>
         </div>
         <div class="error-field">
           <span>
@@ -33,35 +39,32 @@
           </span>
         </div>
         <div 
-          :class="`button clickable ${submitable() ? 'login-true' : 'login-false'}`"
-          @click="submitable() && login()"
+          :class="`button clickable ${submitable() ? 'signup-true' : 'signup-false'}`"
+            @click="submitable() && signup()"
         >
-          <span>Đăng nhập</span>
-        </div>
-        <div class="button forgot-password">
-          <span class="clickable">Lấy lại mật khẩu</span>
+          <span>
+            Tạo tài khoản
+          </span>
         </div>
       </div>
-      <div class="border">
-  
-      </div>
+      <div class="border"></div>
       <div class="view-wrapper">
         <div class="title">
-          <span>Đăng nhập với</span>
+          <div>Tạo tài khoản với</div>
         </div>
-        <div class="button social facebook">
+        <div class="social facebook button">
           <span>
             <InlineSvg :src="facebook" class="icon"></InlineSvg>
             Facebook
           </span>
         </div>
-        <div class="button social google">
+        <div class="social google button">
           <span>
             <InlineSvg :src="google" class="icon"></InlineSvg>
             Google
           </span>
         </div>
-        <div class="button social apple">
+        <div class="social apple button">
           <span>
             <InlineSvg :src="apple" class="icon"></InlineSvg>
             Apple
@@ -71,7 +74,7 @@
     </div>
     <div class="footer">
       <span>
-        Bạn đăng nhập là đồng ý với <em>điều khoản sử dụng</em> và <em>chính sách bảo mật</em> của VnExpress & được bảo vệ bởi reCAPTCHA
+        Bạn tạo tài khoản là đồng ý với <em>quy định</em>, <em>điều khoản sử dụng</em> và <em>chính sách bảo mật</em> của VnEsorses và được bảo vệ bởi reCAPTCHA
       </span>
     </div>
   </div>
@@ -79,10 +82,11 @@
 
 <script>
 import { GCLOUD_URL, VUE_APP_ASSETS_DIR, VUE_APP_BACKEND_URL } from '@/constants';
-import { mapActions } from 'vuex';
 import axios from 'axios';
-export default {
-  name: "LoginView",
+import { mapActions } from 'vuex';
+
+export default{
+  name: "SignUpView",
   data() {
     return {
       facebook: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/facebook_icon.svg`,
@@ -90,11 +94,11 @@ export default {
       apple: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/apple_icon.svg`,
       eye_on: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/eye_on_icon.svg`,
       eye_off: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/eye_off_icon.svg`,
+      show_password: false,
       email: '',
       email_error: '',
       password: '',
       password_error: '',
-      show_password: false,
     }
   },
   methods: {
@@ -122,11 +126,11 @@ export default {
         && this.email && this.password && true
       )
     },
-    async login() {
+    async signup() {
       this.toggleLoading()
       await axios({
         method: 'post',
-        url: `${VUE_APP_BACKEND_URL}/users/sign_in`,
+        url: `${VUE_APP_BACKEND_URL}/users`,
         data: {
           user: {
             email: this.email,
@@ -136,8 +140,8 @@ export default {
       })
       .then(response => {
         const data = response.data.user
-        this.setUser(data);
-        this.$emit('exit')
+        this.setUser(data)
+        this.$emit('after-auth')
       })
       .catch(err => {
         console.clear()
@@ -149,28 +153,43 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.login-view {
+<style lang="scss" scoped>
+.signup-view {
   height: 100%;
   display: flex;
   flex-direction: column;
-  .login-content {
+  .signup-content{
     display: grid;
     grid-template-columns: 53% 0% 47%;
-    .view-wrapper {
+    .border {
+      margin-top: 35px;
+      margin-bottom: 0px;
+      border-left: 1px solid #ccc;
+    }
+    .view-wrapper{
       height: 100%;
-      width: 100%;
-      display: block;
-      .title {
-        height: 90px;
-        width: 100%;
+      .title{
+        margin-top: 30px;
+        margin-bottom: 25px;
+        height: 92px;
         display: flex;
-        span {
-          margin: auto;
+        flex-direction: column;
+        div {
           font-size: 18px;
+          margin: auto;
+          padding: 5px 0;
         }
       }
-      .password-wrapper {
+      .text-input{
+        position: relative;
+        height: 55px;
+        width: 80%;
+        margin: auto;
+        font-size: 16px;
+        padding: 0 15px;
+        box-sizing: border-box;
+      }
+      .password-wrapper{
         position: relative;
         .show-icon {
           position: absolute;
@@ -185,30 +204,20 @@ export default {
           }
         }
       }
-      .text-input {
-        height: 50px;
-        width: 80%;
-        margin: 0 10%;
-        padding: 0 15px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        font-size: 18px;
-        box-sizing: border-box;
-      }
-      .error-field {
-        height: 45px;
+      .error-field{
+        height: 20px;
         display: flex;
         span {
           margin: auto 10%;
           color: red;
         }
       }
-      .login-false {
+      .signup-false {
         color: #fff;
         background-color: #ccc;
         font-weight: bold;
       }
-      .login-true {
+      .signup-true {
         color: #fff;
         background-color: rgb(161, 5, 52);
         font-weight: bold;
@@ -217,6 +226,7 @@ export default {
         height: 50px;
         width: 80%;
         margin: auto;
+        margin-bottom: 5px;
         border-radius: 5px;
         font-size: 18px;
         display: flex;
@@ -227,12 +237,7 @@ export default {
           margin: auto;
         }
       }
-      .forgot-password {
-        color: #aaa;
-        &:hover{
-          cursor: context-menu;
-        }
-      }
+
       .social {
         font-weight: bold;
         margin-bottom: 30px;
@@ -259,17 +264,6 @@ export default {
         color: black;
         font-weight: bold;
         margin-bottom: 0px;
-      }
-    }
-    .border {
-      margin-top: 35px;
-      margin-bottom: 30px;
-      border-left: 1px solid #ccc;
-      height: 83%;
-    }
-    .clickable {
-      &:hover {
-        cursor: pointer;
       }
     }
   }

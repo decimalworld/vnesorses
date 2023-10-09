@@ -6,8 +6,16 @@ RSpec.describe 'Blogs' do
   let(:blog) { create(:blog) }
   let(:body_image_count) { 2 }
 
+  let(:show_request) { get "/blogs/#{blog.id}" }
   let(:create_request) { post '/blogs', params: params }
   let(:put_request) { put "/blogs/#{blog.id}", params: params }
+
+  describe 'GET show' do
+    it do
+      show_request
+      expect(response).to have_http_status(:success)
+    end
+  end
 
   describe 'POST create' do
     let(:params) do
@@ -16,9 +24,10 @@ RSpec.describe 'Blogs' do
 
     it do
       expect { create_request }
-        .to change(Blog, :count).by(1)
-                                .and change(Images::Cover, :count).by(1)
-                                                                  .and change(Images::Body, :count).by(body_image_count)
+        .to change(Blog, :count)
+        .by(1)
+        .and change(Images::Cover, :count).by(1)
+        .and change(Images::Body, :count).by(body_image_count)
       expect(response).to have_http_status(:success)
     end
   end

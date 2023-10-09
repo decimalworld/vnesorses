@@ -1,6 +1,6 @@
 <template>
 <div class="background">
-  <div class="modal">
+  <div class="modal" v-show="!afterAuth">
     <div class="modal-tab-group">
       <div 
         :class="`modal-tab ${login ? 'focus' : ''}`" 
@@ -19,25 +19,37 @@
       </div>
     </div>
     <div class="modal-view-group">
-      <LoginView></LoginView>
+      <LoginView v-show="login==true" @exit="$emit('exit')"></LoginView>
+      <SignUpView v-show="login==false" @after-auth="afterAuth=true"></SignUpView>
     </div>
   </div>
+  <Confirmation 
+    @exit="$emit('exit')"
+    @confirmed="toLogin" 
+    v-if="afterAuth"/>
 </div>
 </template>
 
 <script>
 import { GCLOUD_URL, VUE_APP_ASSETS_DIR } from '@/constants';
 import LoginView from './LoginView';
+import SignUpView from './SignUpView';
+import Confirmation from './Confirmation';
 export default {
   name: "authenticate",
-  components: { LoginView },
+  components: { LoginView, SignUpView, Confirmation },
   data() {
     return {
       login: true,
+      afterAuth: false,
       exit: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/basic_exit_icon.svg`,
     }
   },
   methods: {
+    toLogin() {
+      this.afterAuth=false
+      this.login=true
+    }
   }
 }
 </script>

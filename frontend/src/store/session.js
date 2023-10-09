@@ -1,15 +1,17 @@
 const state = {
-  token: ''
+  user: {},
 }
 
 const mutations = {
-  setToken: (state, token) => state.token = token
+  setUser: (state, user) => state.user = user,
 }
 const getters = {
-  token: state => state.token
+  user: state => state.user,
+  token: state => state.user?.token,
+  confirmation: state => state.user?.confirmation_token
 }
 const actions = {
-  setToken: ({ commit }, token) => commit('setToken', token) 
+  setUser: ({ commit }, user) => commit('setUser', user),
 }
 
 export{

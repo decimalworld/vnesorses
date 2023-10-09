@@ -8,6 +8,8 @@ module ErrorHandler
   included do
     rescue_from ActionController::ParameterMissing, with: :unprocessable_response
     rescue_from ErrorHandler::Unauthorized, with: :unauthorized_response
+    rescue_from ActiveRecord::RecordInvalid, with: :unprocessable_response
+    rescue_from ActiveRecord::RecordNotFound, with: :unprocessable_response
   end
 
   def unprocessable_response(error)

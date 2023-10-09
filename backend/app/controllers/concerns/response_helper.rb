@@ -13,11 +13,9 @@ module ResponseHelper
         }
       )
     {
-      status: {
-        code: 200,
-        message: 'Logged in successfully.',
-        data: serialized_data
-      }
+      status_code: 200,
+      message: options[:message] || 'Successful',
+      data.class.model_name.human.downcase => serialized_data
     }
   end
 end

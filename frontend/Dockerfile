@@ -20,6 +20,7 @@ ENV VUE_APP_BUCKET_NAME=${BUCKET_NAME}
 ENV VUE_APP_ASSETS_DIR=${ASSETS_DIR}
 
 COPY --from=development /frontend/dist /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./subtitute_variables.sh /subtitute_variables.sh
 RUN chmod +x /subtitute_variables.sh
 ENTRYPOINT [ "/subtitute_variables.sh" ]
