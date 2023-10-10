@@ -12,6 +12,7 @@
 #
 class Tag < ApplicationRecord
   belongs_to :category
+  has_many :blogs, dependent: :destroy
 
   validates :name, uniqueness: { scope: :category_id }, presence: true
 end

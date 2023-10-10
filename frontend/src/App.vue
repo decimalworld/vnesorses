@@ -71,6 +71,7 @@ export default {
 }
 .container {
   width: 73.5%;
+  height: auto;
   margin: auto;
   display: flex;
   flex-direction: column;

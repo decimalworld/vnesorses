@@ -9,9 +9,12 @@
 #  body       :text
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  blog_type  :integer          default("normal")
+#  tag_id     :uuid
 #
 FactoryBot.define do
   factory :blog do
+    tag
     title { Faker::Lorem.sentence }
     body  { Faker::Lorem.paragraph }
     transient do

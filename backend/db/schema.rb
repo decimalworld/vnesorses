@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_09_023321) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_10_151752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -20,7 +20,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_023321) do
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "is_spotlight", default: false
+    t.integer "blog_type", default: 0
+    t.uuid "tag_id"
+    t.index ["blog_type"], name: "index_blogs_on_blog_type"
+    t.index ["tag_id"], name: "index_blogs_on_tag_id"
   end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -53,6 +56,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_023321) do
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_tags_on_category_id"
     t.index ["name", "category_id"], name: "index_tags_on_name_and_category_id", unique: true
+    t.index ["name"], name: "index_tags_on_name"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -72,4 +76,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_023321) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "blogs", "tags"
 end

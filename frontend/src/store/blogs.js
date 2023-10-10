@@ -39,7 +39,7 @@ const actions = {
     commit('setBlogBody', body)
   },
   saveBlog({ state }, id) {
-    const url = `${VUE_APP_BACKEND_URL}/blogs/${id}`
+    const url = `${VUE_APP_BACKEND_URL}/blogs/commons/${id}`
     axios.request({
       method: 'patch',
       url,
@@ -51,14 +51,12 @@ const actions = {
     .then(res => console.log(res))
     .catch(error => console.log(error))
   },
-  createBlog({}, body_image_count) {
+  createBlog({}, data) {
     return axios
     .request({
       method: 'post',
-      url: `${VUE_APP_BACKEND_URL}/blogs`,
-      data: {
-        body_image_count: body_image_count
-      }
+      url: `${VUE_APP_BACKEND_URL}/blogs/commons/`,
+      data: data
     })
   },
   clearBlog({ state }) {

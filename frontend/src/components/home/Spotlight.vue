@@ -36,14 +36,9 @@ export default {
   margin-bottom: 23px;
   margin-left: 5px;
   display: flex;
-  .cover {
-    display: flex;
-    object-fit: contain;
+  .cover-image {
     height: 100%;
     width: 580px;
-    .cover-image{
-      
-    }
   }
   .summary-wrapper {
     text-align: left;

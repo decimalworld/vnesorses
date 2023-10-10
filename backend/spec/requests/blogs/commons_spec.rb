@@ -2,13 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Blogs' do
+RSpec.describe 'Commons' do
   let(:blog) { create(:blog) }
+  let(:tag) { create(:tag) }
   let(:body_image_count) { 2 }
 
-  let(:show_request) { get "/blogs/#{blog.id}" }
-  let(:create_request) { post '/blogs', params: params }
-  let(:put_request) { put "/blogs/#{blog.id}", params: params }
+  let(:show_request) { get "/blogs/commons/#{blog.id}" }
+  let(:create_request) { post '/blogs/commons', params: params }
+  let(:put_request) { put "/blogs/commons/#{blog.id}", params: params }
 
   describe 'GET show' do
     it do
@@ -19,7 +20,10 @@ RSpec.describe 'Blogs' do
 
   describe 'POST create' do
     let(:params) do
-      { body_image_count: body_image_count }
+      {
+        body_image_count: body_image_count,
+        tag_name: tag.name
+      }
     end
 
     it do

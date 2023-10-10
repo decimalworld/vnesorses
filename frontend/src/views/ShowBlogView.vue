@@ -10,7 +10,7 @@
           Sức khỏe > Tin tức
         </span>
         <span>
-          Ngày tháng năm
+          {{ blog.created_at }}
         </span>
       </div>
       <div class="title">{{  blog.title }}</div>
@@ -38,7 +38,7 @@ export default {
     const id = this.$route.params.id
     axios({
       method: 'get',
-      url: `${VUE_APP_BACKEND_URL}/blogs/${id}`
+      url: `${VUE_APP_BACKEND_URL}/blogs/commons/${id}`
     })
     .then(response => {
       this.blog = response.data.blog
@@ -49,7 +49,7 @@ export default {
 
 <style lang="scss" scoped>
 .show-blog-view{
-  height: 1000px;
+  height: auto;
   background-color: white;
   display: grid;
   grid-template-columns: 865px 1fr;
@@ -73,6 +73,7 @@ export default {
         justify-content: space-between;
         width: 100%;
         span {
+          font-size: 18px;
           margin: auto 10px;
         }
       }

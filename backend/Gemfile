@@ -20,6 +20,7 @@ gem 'activerecord-import'
 gem 'devise'
 gem 'devise-jwt'
 gem 'google-cloud-storage'
+gem 'kaminari'
 gem 'mailtrap'
 gem 'rack-cors'
 

@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Spotlights' do
-  let!(:blog) { create(:blog, is_spotlight: true) }
+  let!(:blog) { create(:blog, blog_type: 'spotlight') }
   let(:body_image_count) { 2 }
 
-  let(:index_request) { get '/spotlights' }
+  let(:index_request) { get '/blogs/spotlights' }
 
   describe 'GET index' do
     it do

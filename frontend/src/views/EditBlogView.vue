@@ -4,7 +4,17 @@
       <div class="cover-group">
         <label for="blog-photo" class="clickable upload-button">Upload Cover Photo</label>
         <input type="file" id="blog-photo" ref="blogPhoto" accept=".png, .jpg, .jpeg" @change="fileChange">
-        <span>File Chosen: {{ coverChosen }}</span>
+        <div class="file-info">File Chosen: {{ coverChosen }}</div>
+        <div class="select-wrapper">
+          <div class="select-label">Tag: </div>
+          <select v-model="tag_name">
+            <option disabled value="">Please select one</option>
+            <template v-for="category in categories">
+              <option disabled value="" class="category-marker">{{ category.name }}</option>
+              <option v-for="(tag, index2) in category.tags" :value="tag.name" :key="index2">{{ tag.name }}</option>
+            </template>
+          </select>
+        </div>
       </div>
       <div class="title-group">
         <textarea 
@@ -52,6 +62,7 @@ Quill.register("modules/imageResize", ImageResize);
 
 import { VueEditor } from 'vue3-editor';
 import axios from 'axios';
+import { CATEGORIES } from '@/constants';
 export default {
   name: 'EditBlogView',
   components: { VueEditor },
@@ -60,6 +71,8 @@ export default {
       cover: '',
       coverChosen: '',
       images: '',
+      tag_name: '',
+      categories: CATEGORIES,
       editorOptions: {
         modules: {
           imageResize: {}
@@ -153,12 +166,15 @@ export default {
     async publish() {
       this.toggleLoading();
       const images = this.getBlogImages();
-      const response = await this.createBlog(images.length);
+      const response = await this.createBlog({
+        tag_name: this.tag_name,
+        body_image_count: images.length,
+      });
       await Promise.all([
-        this.uploadCover(response.data.cover.signed_url),
-        this.uploadBlogImage(images, response.data.images)
+        this.uploadCover(response.data.blog.cover.signed_url),
+        this.uploadBlogImage(images, response.data.blog.images)
       ])
-      await this.saveBlog(response.data.id);
+      await this.saveBlog(response.data.blog.id);
       this.toggleLoading();
       this.clearBlog();
       this.$router.push({ name: 'home' })
@@ -173,7 +189,7 @@ export default {
   height: 100%;
   display: flex;
   .edit-blog {
-    margin: 0 30px;
+    margin: 20px 30px;
     width: 70%;
     display: flex;
     flex-direction: column;
@@ -197,18 +213,36 @@ export default {
       display: flex;
       width: 100%;
       .upload-button {
-        width: 200px;
+        width: 100px;
       }
       input {
         display: none;
       }
-      span {
-        width: 100%;
+      .file-info {
+        width: 250px;
         text-align: start;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         margin: auto 15px;
+      }
+      .select-wrapper{
+        display: flex;
+        .select-label {
+          margin: auto 5px;
+        }
+        select {
+          width: 250px;
+          height: 30px;
+          font-weight: 600;
+          font-size: 15px;
+          margin: auto 10px;
+          .category-marker {
+            background-color: #303030;
+            color: white;
+            font-weight: bold;
+          }
+        }
       }
     }
 

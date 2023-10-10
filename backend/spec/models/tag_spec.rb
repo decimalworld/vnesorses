@@ -20,6 +20,9 @@ RSpec.describe Tag do
   end
 
   describe 'association' do
-    it { expect(tag).to belong_to(:category) }
+    it do
+      expect(tag).to belong_to(:category)
+      expect(tag).to have_many(:blogs)
+    end
   end
 end

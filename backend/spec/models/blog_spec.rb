@@ -9,6 +9,8 @@
 #  body       :text
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  blog_type  :integer          default("normal")
+#  tag_id     :uuid
 #
 require 'rails_helper'
 
@@ -26,6 +28,7 @@ RSpec.describe Blog do
     it do
       expect(blog).to have_one(:cover).class_name(Images::Cover.name).dependent(:destroy)
       expect(blog).to have_many(:images).class_name(Images::Body.name).dependent(:destroy)
+      expect(blog).to belong_to(:tag).optional
     end
   end
 end

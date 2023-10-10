@@ -6,7 +6,10 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     confirmations: 'users/confirmations'
   }
-  resources :blogs, only: %i(show create update)
   resources :categories, only: :index
-  resources :spotlights, only: :index
+  namespace :blogs do
+    resources :commons, only: %i(show create update)
+    resources :spotlights, only: :index
+    resources :title_news, only: :index
+  end
 end
