@@ -22,6 +22,7 @@ gem 'devise-jwt'
 gem 'google-cloud-storage'
 gem 'kaminari'
 gem 'mailtrap'
+gem 'omniauth'
 gem 'rack-cors'
 
 group :development, :test do

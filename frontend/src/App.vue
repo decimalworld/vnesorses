@@ -1,5 +1,5 @@
 <template>
-  <div :class="showAuthent ? 'stop-scroll' : 'scrollable'">
+  <div :class="showAuthent ? 'stop-scroll' : 'scrollable'" ref="appContent">
     <Loading v-if="loading"/>
     <Preview v-if="preview"/>
     <Authenticate v-if="showAuthent" @exit="hideAuthent"/>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Navbar from './components/nav/Navbar';
 import DropBar from './components/drop/DropBar';
 import Footer from './components/footer/Footer';
@@ -34,12 +34,19 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setMasterScroll']),
     hideAuthent() {
       this.showAuthent = false
     },
     displayAuthent() {
       this.showAuthent = true
     }
+  },
+  mounted() {
+    const el = this.$refs.appContent
+    el.addEventListener('scroll', () => {
+      this.setMasterScroll(el.scrollTop)
+    }, true)
   }
 }
 </script>

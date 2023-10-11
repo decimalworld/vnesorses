@@ -2,7 +2,7 @@
 
 module BlogSerializer
   class CommonSerializer < ActiveModel::Serializer
-    attributes :id, :tag_name, :created_at
+    attributes :id, :tag, :created_at
     has_one :cover
     has_many :images, if: :newly_created?
     attribute :title, unless: :newly_created?
@@ -17,8 +17,12 @@ module BlogSerializer
       object.created_at.strftime('%A, %d/%m/%Y, %H:%M')
     end
 
-    def tag_name
-      object.tag&.name
+    def tag
+      tag = object.tag
+      {
+        category_name: tag&.category&.name,
+        tag_name: tag&.name
+      }
     end
   end
 end

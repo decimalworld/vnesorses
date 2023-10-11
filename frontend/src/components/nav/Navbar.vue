@@ -2,7 +2,7 @@
   <div class="nav">
     <div class="container">
       <Transition name="fade">
-        <div v-show="scrollPosition < 400" class="label">
+        <div v-show="masterScroll < 400" class="label">
           <InlineSvg :src="baseBash" class="icon clickable" @click="redirectTo('home')"/>
           <Tab 
           class="news" 
@@ -12,8 +12,8 @@
         </div>
       </Transition>
       <Transition name="fade">
-        <div v-show="scrollPosition >= 400" class="label">
-          <InlineSvg :src="home" class="icon"/>
+        <div v-show="masterScroll >= 400" class="label">
+          <InlineSvg :src="home" class="icon clickable" @click="redirectTo('home')"/>
         </div>
       </Transition>
       <div class="categories">
@@ -35,15 +35,15 @@ import {
   CATEGORIES
 } from '@/constants';
 import Tab from "./Tab.vue"
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'Navbar',
   components: { Tab },
+  computed: {
+    ...mapGetters(['masterScroll'])
+  },
   methods: {
-    onScroll(e) {
-      this.scrollPosition = window.scrollY;
-    },
     redirectTo(name, { params } = {}) {
       let route = { name }
       route = (params ? { ...route, params} : route)
@@ -58,12 +58,8 @@ export default {
       dropDown: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/drop_down_icon.svg`,
       longLabel: true, 
       categories: CATEGORIES,
-      scrollPosition: 0
     }
   },
-  mounted() {
-    window.addEventListener("scroll", this.onScroll, true)
-  }
 }
 </script>
 

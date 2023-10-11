@@ -5,13 +5,23 @@
 
     </div>
     <div class="content">
-      <div class="tag">
-        <span>
-          Sức khỏe > Tin tức
-        </span>
-        <span>
-          {{ blog.created_at }}
-        </span>
+      <div class="meta">
+        <div class="tag">
+          <span>
+            {{ blog.tag.category_name }}  
+          </span>
+          <template v-if="blog.tag.tag_name">
+            <InlineSvg :src="rightArrow" class="icon"></InlineSvg>
+            <span>
+              {{ blog.tag.tag_name }}
+            </span>
+          </template>
+        </div>
+        <div class="date">
+          <span>
+            {{ blog.created_at }}
+          </span>
+        </div>
       </div>
       <div class="title">{{  blog.title }}</div>
       <div class="body" v-html="blog.body"></div>
@@ -24,14 +34,15 @@
 </template>
 
 <script>
-import { VUE_APP_BACKEND_URL } from '@/constants';
+import { GCLOUD_URL, VUE_APP_ASSETS_DIR, VUE_APP_BACKEND_URL } from '@/constants';
 import axios from 'axios';
 
 export default {
   name: "showBlogView",
   data() {
     return {
-      blog: null
+      blog: null,
+      rightArrow: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/right_arrow_icon.svg`, 
     }
   },
   beforeMount() {
@@ -67,14 +78,23 @@ export default {
       display: flex;
       flex-direction: column;
       margin: 0px 10px;
-      .tag{
+      .meta {
         height: 60px;
         display: flex;
         justify-content: space-between;
         width: 100%;
-        span {
-          font-size: 18px;
-          margin: auto 10px;
+        div {
+          height: 100%;
+          display: flex;
+          span {
+            margin: auto 0px;
+            font-size: 18px;
+          }
+          .icon {
+            margin: auto 0;
+            height: 30px;
+            width: 30px;
+          }
         }
       }
       .title {
