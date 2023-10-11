@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   }
   resources :categories, only: :index
   namespace :blogs do
-    resources :commons, only: %i(show create update)
+    resources :commons, only: %i(index show create update)
     resources :spotlights, only: :index
     resources :title_news, only: :index
   end

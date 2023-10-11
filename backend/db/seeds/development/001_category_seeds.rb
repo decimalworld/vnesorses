@@ -81,7 +81,8 @@ data = [
       { name: 'Bóng đá' },
       { name: 'Lịch thi đấu' },
       { name: 'Asiad 19' },
-      { name: 'Trắc nghiệm' }
+      { name: 'Trắc nghiệm' },
+      { name: 'Các môn khác' }
     ]
   }, {
     name: 'Pháp luật',

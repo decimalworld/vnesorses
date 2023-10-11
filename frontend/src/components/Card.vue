@@ -1,17 +1,19 @@
 <template>
   <div class="card">
-    <div class="card-title">
+    <div 
+      :class="`card-title ${navigatable ? 'clickable' : ''}`"
+      @click="goToBlog(blog.id)"
+    >
       <span>
-        {{ getBlogTitle() }}
+        {{ blog.title }}
       </span>
     </div>
     <div class="card-content">
       <div class="cover">
-        <img :src="getBlogCover()" class="cover-image">
+        <img :src="blog.cover.full_path" class="cover-image">
       </div>
       <div class="body">
-        <div>
-          {{ getBlogSummary() }}
+        <div v-html="blog.summary">
         </div>  
       </div>
     </div>
@@ -19,15 +21,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import router from '@/router';
+
 export default {
   name: "card",
+  props: {
+    blog: Object,
+    navigatable: {
+      type: Boolean,
+      default: false
+    },
+  },
   methods: {
-    ...mapGetters([
-      'getBlogTitle',
-      'getBlogSummary',
-      'getBlogCover',
-    ])
+    goToBlog(id) {
+      router.push({ path: `blog/${id}` })
+    }
   }
 }
 </script>
@@ -38,13 +46,19 @@ export default {
     width: 380px;
     background-color: #fff;
     display: table;
+    padding: 5px 10px;
     .card-title {
       min-height: 25px;
       display: flex;
       span {
         text-align: start;
-        padding: 5px 3px;
         font-weight: bold;
+      }
+    }
+    .clickable {
+      &:hover{
+        color: blue;
+        cursor: pointer;
       }
     }
     .card-content {
@@ -59,23 +73,29 @@ export default {
         display: flex;
         .cover-image {
           margin: auto;
-          height: 95%;
-          width: 95%;
+          height: 100%;
+          width: 100%;
         }
       }
       .body {
-        height: 115px;
+        height: 100%;
         overflow: clip;
+        margin-left: 5px;
         div {
+          height: 100%;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 6;
+          height: 100%;
           width: 100%;
           text-align: start;
           font-size: 15px;
           margin: 3px 2px;
           overflow: clip;
           text-overflow: ellipsis;
+          :deep(p) {
+            margin: 0px;
+          }
         }
       }
     }

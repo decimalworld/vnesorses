@@ -4,16 +4,22 @@ import { PARAGRAPH_REGEX, IMAGE_REGEX, VUE_APP_BACKEND_URL } from "@/constants"
 const state = {
   currentBlog: {
     title: '',
-    cover: '',
+    cover: {
+      full_path: ''
+    },
     body: '',
+    summary: '',
   }
 }
 
 const mutations = {
   setCurrentBlog: (state, blog) => state.currentBlog = blog,
   setBlogTitle: (state, title) => state.currentBlog.title = title,
-  setBlogCover: (state, cover) => state.currentBlog.cover = cover,
-  setBlogBody: (state, body) => state.currentBlog.body = body,
+  setBlogCover: (state, full_path) => state.currentBlog.cover.full_path = full_path,
+  setBlogBody: (state, body) => {
+    state.currentBlog.body = body,
+    state.currentBlog.summary = body.match(PARAGRAPH_REGEX)?.groups?.content
+  }
 }
 
 const getters = {
@@ -21,7 +27,6 @@ const getters = {
   getBlogTitle: state => state.currentBlog.title,
   getBlogCover: state => state.currentBlog.cover,
   getBlogBody: state => state.currentBlog.body,
-  getBlogSummary: state => state.currentBlog.body.match(PARAGRAPH_REGEX)?.groups?.content,
   getBlogImages: state => [...state.currentBlog.body.matchAll(IMAGE_REGEX)].map(img => img.groups.src)
 }
 
@@ -32,8 +37,8 @@ const actions = {
   setBlogTitle({ commit }, title) {
     commit('setBlogTitle', title)
   },
-  setBlogCover({ commit }, cover) {
-    commit('setBlogCover', cover)
+  setBlogCover({ commit }, full_path) {
+    commit('setBlogCover', full_path)
   },
   setBlogBody({ commit }, body) {
     commit('setBlogBody', body)

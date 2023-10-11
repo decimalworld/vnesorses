@@ -1,17 +1,20 @@
 <template>
   <div class="preview" @click="togglePreview()">
-    <Card></Card>
+    <Card :blog="getCurrentBlog"></Card>
   </div>
 </template>
 
 <script>
 import Card from './Card'
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   name: "preview",
   components: { Card },
+  computed: {
+    ...mapGetters(['getCurrentBlog']),
+  },
   methods: {
-    ...mapActions(['togglePreview'])
+    ...mapActions(['togglePreview']),
   }
 }
 </script>

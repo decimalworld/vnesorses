@@ -34,7 +34,7 @@ export default {
   width: 875px;
   margin-top: 23px;
   margin-bottom: 23px;
-  margin-left: 5px;
+  margin-left: 10px;
   display: flex;
   .cover-image {
     height: 100%;
