@@ -3,7 +3,7 @@
     <div class="spotlight-group">
       <div class="spotlight-news">
         <Spotlight v-if="spotlightNew" :blog="spotlightNew"/>
-        <div class="horizontal-border"></div>
+        <Border direction="bottom"/>
         <div class="title-news-wrapper">
           <TitleNews 
             v-if="titleNews"
@@ -12,7 +12,7 @@
             :blog="blog"
           ></TitleNews>
         </div>
-        <div class="horizontal-border"></div>
+        <Border direction="bottom"/>
       </div>
       <div class="spotlight-ads">
         <div class="ads"></div>
@@ -20,28 +20,36 @@
     </div>
     <div class="news-container">
       <HotNews v-if="hotNews" :hotNews="hotNews"></HotNews>
-      <div class="vertical-border"></div>
+      <Border direction="left"/>
       <div class="categorized-news">
-
+      <div class="categories">
+        <CategoryGroup/>
+        <Border direction="bottom"/>
+      </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import HotNews from '@/components/home/HotNews'
-import Spotlight from '@/components/home/Spotlight'
-import TitleNews from '@/components/home/TitleNews.vue'
+import HotNews from '@/components/home/HotNews';
+import Spotlight from '@/components/home/Spotlight';
+import TitleNews from '@/components/home/TitleNews.vue';
+import CategoryGroup from '@/components/home/CategoryGroup.vue';
+
+import Border from '@/components/common/Border'
 import { VUE_APP_BACKEND_URL } from '@/constants'
 import axios from 'axios'
 
 export default {
   name: 'HomeView',
-  components: { 
-    Spotlight, 
-    TitleNews, 
+  components: {
+    Spotlight,
+    TitleNews,
     HotNews,
-  },
+    Border,
+    CategoryGroup
+},
   data() {
     return {
       spotlightNew: null,
@@ -96,6 +104,8 @@ export default {
 .home {
   height: auto;
   background-color: white;
+  display: flex;
+  flex-direction: column;
   .spotlight-group{
     display: grid;
     height: auto;
@@ -117,16 +127,8 @@ export default {
     width: 100%;
     height: auto;
     display: grid;
+    margin: 10px 0px;
     grid-template-columns: 36.5% 0px auto;
-    .vertical-border {
-      border-left: 1px solid #ccc;
-      height: 100%;
-    }
   }
-  .horizontal-border {
-        width: 98%;
-        border-bottom: 1px solid #ccc;
-        margin: 0 auto;
-      }
 }
 </style>

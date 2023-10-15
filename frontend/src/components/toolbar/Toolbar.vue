@@ -9,11 +9,11 @@
         <div class="brand">
           <div class="text">VNESORSES</div>
         </div>
-        <div class="border"></div>
+        <Border direction="left" style="height: 50%"/>
         <div class="date">
           <div class="text"> {{ date }}</div>
         </div>
-        <div class="border"></div>
+        <Border direction="left" style="height: 50%"/>
         <div class="weather">
           <div class="location text">{{ "TPHCM" }}</div>
           <div class="text">{{ "33&deg;" }}</div>
@@ -38,7 +38,7 @@
             International
           </div>
         </div>
-        <div class="border"></div>
+        <Border direction="left" style="height: 50%"/>
         <div class="right-tab">
           <InlineSvg :src="search" class="icon"></InlineSvg>
         </div>
@@ -69,9 +69,10 @@ import { GCLOUD_URL, VUE_APP_ASSETS_DIR } from '@/constants';
 import { mapGetters } from 'vuex';
 import moment from 'moment'
 import Dropdown from './Dropdown.vue';
+import Border from '../common/Border.vue';
 export default {
   name: "toolbar",
-  components: { Dropdown },
+  components: { Dropdown, Border },
   data() {
     return {
       date: moment().format('dddd, DD/M/YYYY'),
@@ -101,11 +102,6 @@ export default {
   height: 50px;
   margin-bottom: 10px;
   padding-bottom: 5px;
-  .border{
-    margin: auto 0;
-    height: 50%;
-    border-left: 1px solid #ccc;
-  }
   .content {
     width: 75%;
     height: 100%;

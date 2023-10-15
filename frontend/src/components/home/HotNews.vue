@@ -9,7 +9,7 @@
           class="card"
           >
         </AsyncCard>
-      <div class="horizontal-border" v-if="index < hotNews.length"></div>
+        <Border direction="bottom"/>
     </template>
     </div>
   </div>
@@ -17,6 +17,7 @@
 
 <script>
 import { defineAsyncComponent } from 'vue';
+import Border from '@/components/common/Border.vue';
 
 const AsyncCard = defineAsyncComponent({
   loader: () => import('../Card.vue'),
@@ -24,7 +25,7 @@ const AsyncCard = defineAsyncComponent({
 
 export default {
   name: "hotNews",
-  components: { AsyncCard },
+  components: { AsyncCard, Border },
   props: {
     hotNews: Array
   }
@@ -37,7 +38,7 @@ export default {
   margin-right: 25px;
   .card-container{
     .card{
-      margin: 12px 0px;
+      margin: 15px 0px;
     }
   }
 }

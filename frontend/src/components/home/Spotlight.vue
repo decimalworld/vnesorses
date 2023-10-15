@@ -4,9 +4,11 @@
       <img :src="blog.cover.full_path" class="cover-image">
     </div>
     <div class="summary-wrapper">
-      <div class="title" @click="goToBlog(blog.id)">
-        {{ blog.title }}
-      </div>
+      <ClickableTitle
+        :text="blog.title"
+        style="font-size: 25px"
+        @click="goToBlog(blog.id)"
+      ></ClickableTitle>
       <div class="summary" v-html="blog.summary"></div>
     </div>
   </div>
@@ -14,9 +16,11 @@
 
 <script>
 import router from '@/router';
+import ClickableTitle from '@/components/common/ClickableTitle';
 
 export default {
   name: "spotlight",
+  components: { ClickableTitle },
   props: { 
     blog: Object
   },
@@ -43,14 +47,6 @@ export default {
   .summary-wrapper {
     text-align: left;
     margin: 5px 20px;
-    .title {
-      font-size: 25px;
-      font-weight: bold;
-      &:hover {
-        color: blue;
-        cursor: pointer;
-      }
-    }
     .summary {
       margin: 15px auto;
       font-size: 18px;

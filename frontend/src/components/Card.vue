@@ -1,13 +1,10 @@
 <template>
   <div class="card">
-    <div 
-      :class="`card-title ${navigatable ? 'clickable' : ''}`"
+    <ClickableTitle 
+      :text="blog.title"
+      class="card-title"
       @click="goToBlog(blog.id)"
-    >
-      <span>
-        {{ blog.title }}
-      </span>
-    </div>
+    />
     <div class="card-content">
       <div class="cover">
         <img :src="blog.cover.full_path" class="cover-image">
@@ -22,9 +19,11 @@
 
 <script>
 import router from '@/router';
+import ClickableTitle from '@/components/common/ClickableTitle';
 
 export default {
   name: "card",
+  components: { ClickableTitle },
   props: {
     blog: Object,
     navigatable: {
@@ -46,26 +45,17 @@ export default {
     width: 380px;
     background-color: #fff;
     display: table;
-    padding: 5px 10px;
+    padding: 0px 10px;
     .card-title {
       min-height: 25px;
       display: flex;
-      span {
-        text-align: start;
-        font-weight: bold;
-      }
-    }
-    .clickable {
-      &:hover{
-        color: blue;
-        cursor: pointer;
-      }
     }
     .card-content {
       height: 110px;
       width: 100%;
       display: flex;
       flex-direction: row;
+      margin: 5px 0px;
       .cover {
         flex-shrink: 0;
         width: 150px;

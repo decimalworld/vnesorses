@@ -8,7 +8,7 @@
           class="news" 
           :category="{ name: 'Mới nhất', url: 'tin-tuc-24h'}"
           ></Tab>
-          <div class="border"></div>
+          <Border direction="left" style="height: 50%"/>
         </div>
       </Transition>
       <Transition name="fade">
@@ -35,11 +35,12 @@ import {
   CATEGORIES
 } from '@/constants';
 import Tab from "./Tab.vue"
+import Border from "../common/Border.vue"
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'Navbar',
-  components: { Tab },
+  components: { Tab, Border },
   computed: {
     ...mapGetters(['masterScroll'])
   },
@@ -103,11 +104,6 @@ export default {
         text-align: center;
         width: 80px;
         font-size: 15px;
-      }
-      .border {
-        border-right: 1px #909090 solid;
-        height: 50%;
-        margin: auto;
       }
     }
     .categories {
