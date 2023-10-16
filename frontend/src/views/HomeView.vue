@@ -23,7 +23,7 @@
       <Border direction="left"/>
       <div class="categorized-news">
       <div class="categories">
-        <CategoryGroup/>
+        <CategoryGroup :category="categories.find((category) => category.name === 'Kinh doanh')"/>
         <Border direction="bottom"/>
       </div>
       </div>
@@ -38,7 +38,7 @@ import TitleNews from '@/components/home/TitleNews.vue';
 import CategoryGroup from '@/components/home/CategoryGroup.vue';
 
 import Border from '@/components/common/Border'
-import { VUE_APP_BACKEND_URL } from '@/constants'
+import { CATEGORIES, VUE_APP_BACKEND_URL } from '@/constants'
 import axios from 'axios'
 
 export default {
@@ -52,6 +52,7 @@ export default {
 },
   data() {
     return {
+      categories: CATEGORIES,
       spotlightNew: null,
       titleNews: null,
       hotNews: null,
@@ -105,6 +106,7 @@ export default {
   height: auto;
   background-color: white;
   display: flex;
+  top: 100px;
   flex-direction: column;
   .spotlight-group{
     display: grid;

@@ -49,7 +49,12 @@ data = [
       { name: 'Quốc tế' },
       { name: 'Doanh nghiệp' },
       { name: 'Chứng khoán' },
-      { name: 'Ebank' }
+      { name: 'Ebank' },
+      { name: 'Vĩ mô' },
+      { name: 'Tiền của tôi' },
+      { name: 'Bảo hiểm' },
+      { name: 'Hàng hóa' },
+      { name: 'eBox' }
     ]
   }, {
     name: 'Bất động sản',

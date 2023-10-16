@@ -2,6 +2,7 @@
   <div 
       class="clickable"
   >
+    <li v-if="listItem"></li>
     <span>{{ text }}</span>
   </div>
 </template>
@@ -11,6 +12,10 @@ export default {
   name: "clickableTitle",
   props: {
     text: String,
+    listItem: {
+      type: Boolean,
+      default: false,
+    }
   }
 }
 </script>
@@ -24,5 +29,9 @@ export default {
       text-align: start;
       font-weight: bold;
       font-size: 18px;
+      display: flex;
+      li {
+        margin-right: -10px;
+      }
     }
 </style>

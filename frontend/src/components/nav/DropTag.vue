@@ -1,7 +1,12 @@
 <template>
   <Transition name="shift">
     <div class="droptag">
-      <div v-for="(tag, index) in tags" :key="index" class="tag">
+      <div 
+        v-for="(tag, index) in category.tags" 
+        :key="index" 
+        class="tag"
+        @click="helpers.goToTag(category.url_name, tag.url_name)"
+      >
         <div class="text">{{ tag.name }}</div>
       </div>
     </div>
@@ -11,8 +16,9 @@
 <script>
 export default {
   name: "Tag",
+  inject: ["helpers"],
   props: {
-    tags: Array
+    category: Object,
   },
 }
 </script>

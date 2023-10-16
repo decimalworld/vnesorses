@@ -30,7 +30,14 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(BASE_URL),
-  routes
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    let el = document.querySelector('#app-content')
+    el.scrollTop=0;
+    return {
+      el: "#app-content"
+    }
+  }
 })
 
 export default router

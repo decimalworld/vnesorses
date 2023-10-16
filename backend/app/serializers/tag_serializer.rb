@@ -11,5 +11,9 @@
 #  updated_at  :datetime         not null
 #
 class TagSerializer < ActiveModel::Serializer
-  attributes :name
+  attributes :id, :name, :url_name
+
+  def url_name
+    object.name.gsub(/\s/, '_').underscore.dasherize
+  end
 end

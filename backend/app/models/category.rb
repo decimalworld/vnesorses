@@ -11,6 +11,7 @@
 #
 class Category < ApplicationRecord
   has_many :tags, dependent: :destroy
+  has_many :blogs, through: :tags
 
   accepts_nested_attributes_for :tags
 

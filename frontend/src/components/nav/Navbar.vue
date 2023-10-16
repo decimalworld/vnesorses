@@ -6,7 +6,7 @@
           <InlineSvg :src="baseBash" class="icon clickable" @click="redirectTo('home')"/>
           <Tab 
           class="news" 
-          :category="{ name: 'Mới nhất', url: 'tin-tuc-24h'}"
+          :category="{ name: 'Mới nhất', url_name: 'tin-tuc-24h'}"
           ></Tab>
           <Border direction="left" style="height: 50%"/>
         </div>

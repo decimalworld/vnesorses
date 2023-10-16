@@ -6,7 +6,7 @@
   <div class="toolbar">
     <div class="content">
       <div class="left-content">
-        <div class="brand">
+        <div class="brand" @click="this.$router.push({name: 'home'})">
           <div class="text">VNESORSES</div>
         </div>
         <Border direction="left" style="height: 50%"/>
@@ -70,6 +70,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment'
 import Dropdown from './Dropdown.vue';
 import Border from '../common/Border.vue';
+import router from '@/router';
 export default {
   name: "toolbar",
   components: { Dropdown, Border },

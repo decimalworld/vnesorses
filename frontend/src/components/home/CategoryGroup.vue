@@ -3,44 +3,51 @@
   <div class="tag-link-group">
     <ClickableTitle
       class="category-link"
-      text="Kinh doanh"
+      :text="category.name"
+      @click="helpers.goToCategory(category.url_name)"
     />
     <ClickableTitle
       class="tag-link"
-      text="Quốc tế"
-    />
-    <ClickableTitle
-      class="tag-link"
-      text="Doanh nghiệp"
-    />
-    <ClickableTitle
-      class="tag-link"
-      text="Chứng khoán"
-    />
-    <ClickableTitle
-      class="tag-link"
-      text="Vĩ mô"
-    />
-    <ClickableTitle
-      class="tag-link"
-      text="Hậu trường kinh doanh"
+      v-for="(tag, index) in category.tags.slice(0, 5)"
+      :key="index"
+      :text="tag.name"
+      @click="helpers.goToTag(category.url_name, tag.url_name)"
     />
   </div>
-  <div class="tag-latest-news" v-if="ready">
+  <div class="tag-latest-news">
     <div class="latest-container">
-      <div class="latest">
-        <img :src="blog.cover.full_path" class="image"/>
+      <div class="latest" v-if="mainBlog">
+        <img :src="mainBlog.cover.full_path" class="image"/>
         <div class="content">
-          <ClickableTitle :text="blog.title"/>
-          <div class="summary" v-html="blog.summary">
+          <ClickableTitle :text="mainBlog.title" @click="helpers.goToBlog(mainBlog.id)"/>
+          <div class="summary" v-html="mainBlog.summary">
           </div>
         </div>
       </div>
       <Border
         direction="left"
+        style="height: 85%"
       />
+      <div class="side-blog" v-if="sideBlog">
+        <ClickableTitle :text="sideBlog.title" @click="helpers.goToBlog(sideBlog.id)"/>
+        <div class="summary" v-html="sideBlog.summary"/>
+      </div>
     </div>
     <Border direction="bottom"/>
+    <div class="title-blogs" v-if="titleBlogs">
+      <template
+        v-for="(titleBlog, index) in titleBlogs"
+        :key="index"
+      >
+      <div class="title-blog">
+        <ClickableTitle 
+          :text="titleBlog.title" 
+          :listItem="true"
+          @click="helpers.goToBlog(titleBlog.id)"
+        />
+      </div>
+      </template>
+    </div>
   </div>
 </div>
 </template>
@@ -57,27 +64,25 @@ const AsyncCard = defineAsyncComponent({
 export default {
   name: "categoryGroup",
   components: { ClickableTitle, AsyncCard, Border },
+  inject: ["helpers"],
+  props: {
+    category: Object
+  },
   data() {
     return {
       ready: null,
-      blog: {
-        title: "Phim Đất rừng phương Nam bị chỉ trích 'làm sai lệch lịch sử'",
-        summary: "Nhà sản xuất \"Đất rừng phương Nam\" đề xuất lên Cục Điện ảnh được đổi tên các bang phái trong phim sau khi tác phẩm bị chỉ trích \"nâng tầm Thiên Địa hội\".",
-        cover: {
-          full_path: "https://storage.googleapis.com/vnesorses.appspot.com/covers/dd5f72bf-a8ea-4f5d-9118-dd479abef9e5"
-        }
-      }
+      mainBlog: null,
+      sideBlog: null,
+      titleBlogs: null,
     }
   },
   async beforeMount() {
     await axios({
-      method: 'get',
-      url: `${VUE_APP_BACKEND_URL}/blogs/spotlights`
+      method: 'post',
+      url: `${VUE_APP_BACKEND_URL}/categories/${this.category.id}/blogs?per=5`
     })
     .then(response => {
-      console.log(response)
-      this.blog = response.data.blog
-      this.ready = true
+      [this.mainBlog, this.sideBlog, ...this.titleBlogs] = response.data.blogs
     })
     .catch(err => {
       console.clear()
@@ -116,7 +121,7 @@ export default {
     }
   }
   .tag-latest-news{
-    height: auto;
+    height: 100%;
     .latest-container {
       display: grid;
       grid-template-columns: 520px 0px auto;
@@ -151,6 +156,34 @@ export default {
             }
           }
         }
+      }
+      .side-blog{
+        height: 85%;
+        margin: auto 20px;
+        .summary {
+          height: auto;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 4;
+          width: 100%;
+          text-align: start;
+          font-size: 16px;
+          margin: 10px 2px;
+          overflow: clip;
+          text-overflow: ellipsis;
+          :deep(p) {
+            margin: auto;
+          }
+        }
+      }
+    }
+    .title-blogs{
+      height: 140px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      .title-blog {
+        display: flex;
+        margin: 25px 15px;
       }
     }
   }

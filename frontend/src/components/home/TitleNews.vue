@@ -1,6 +1,6 @@
 <template>
   <div class="news-wrapper">
-    <div class="title" @click="goToBlog(blog.id)">
+    <div class="title" @click="helpers.goToBlog(blog.id)">
       <span>{{ blog.title }}</span>
     </div>
     <div class="cover-wrapper">
@@ -10,18 +10,12 @@
 </template>
 
 <script>
-import router from '@/router';
-
 export default {
   name: "titleNews",
+  inject: ["helpers"],
   props: {
     blog: Object,
   },
-  methods: {
-    goToBlog(id) {
-      router.push({ path: `blog/${id}` })
-    }
-  }
 }
 </script>
 

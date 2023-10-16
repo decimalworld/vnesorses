@@ -10,7 +10,7 @@ const GCLOUD_URL = `${VUE_APP_STORAGE_URL}/${VUE_APP_BUCKET_NAME}`
 const CATEGORIES = (await axios.request({
       method: 'get',
       url: `${VUE_APP_BACKEND_URL}/categories`,
-})).data
+})).data.categories
 
 export {
   IMAGE_REGEX,

@@ -1,18 +1,16 @@
 <template>
   <div 
     class="category"
-    @click="redirectTo('category', { 
-      params: {
-        category: dasherize(category.url || category.name)
-      } 
-    })"
     @mouseover="dipslayDrop"
     @mouseleave="hideDrop"
-  >
-          <div class='text'>{{ category.name }}</div>
+    >
+          <div 
+            @click="helpers.goToCategory(category.url_name)"
+            class='text'
+          >{{ category.name }}</div>
             <DropTag 
               v-show="showDrop && !dropVisible"
-              :tags="category.tags"
+              :category="category"
               @mouseover="dipslayDrop"
               @mouseleave="hideDrop"
             ></DropTag>
@@ -25,6 +23,7 @@ import DropTag from './DropTag';
 import { mapGetters } from 'vuex';
 export default {
   name: "Tab",
+  inject: ['helpers'],
   components: { DropTag },
   data() {
     return {

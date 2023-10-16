@@ -1,5 +1,5 @@
 <template>
-  <div :class="showAuthent ? 'stop-scroll' : 'scrollable'" ref="appContent">
+  <div :class="showAuthent ? 'stop-scroll' : 'scrollable'" ref="appContent" id="app-content">
     <Loading v-if="loading"/>
     <Preview v-if="preview"/>
     <Authenticate v-if="showAuthent" @exit="hideAuthent"/>
@@ -85,6 +85,7 @@ export default {
   .content {
     height: auto;
     margin: 0px 0px;
+    top: 100px;
   }
 }
 </style>

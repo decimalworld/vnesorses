@@ -20,5 +20,6 @@ RSpec.describe Category do
 
   describe 'association' do
     it { expect(category).to have_many(:tags) }
+    it { expect(category).to have_many(:blogs).through(:tags) }
   end
 end

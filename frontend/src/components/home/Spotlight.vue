@@ -7,7 +7,7 @@
       <ClickableTitle
         :text="blog.title"
         style="font-size: 25px"
-        @click="goToBlog(blog.id)"
+        @click="helpers.goToBlog(blog.id)"
       ></ClickableTitle>
       <div class="summary" v-html="blog.summary"></div>
     </div>
@@ -15,20 +15,15 @@
 </template>
 
 <script>
-import router from '@/router';
 import ClickableTitle from '@/components/common/ClickableTitle';
 
 export default {
   name: "spotlight",
   components: { ClickableTitle },
+  inject: ['helpers'],
   props: { 
     blog: Object
   },
-  methods: {
-    goToBlog(id) {
-      router.push({ path: `blog/${id}` })
-    }
-  }
 }
 </script>
 

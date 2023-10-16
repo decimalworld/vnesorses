@@ -3,7 +3,7 @@
     <ClickableTitle 
       :text="blog.title"
       class="card-title"
-      @click="goToBlog(blog.id)"
+      @click="helpers.goToBlog(blog.id)"
     />
     <div class="card-content">
       <div class="cover">
@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import router from '@/router';
 import ClickableTitle from '@/components/common/ClickableTitle';
 
 export default {
   name: "card",
+  inject: ['helpers'],
   components: { ClickableTitle },
   props: {
     blog: Object,
@@ -30,11 +30,6 @@ export default {
       type: Boolean,
       default: false
     },
-  },
-  methods: {
-    goToBlog(id) {
-      router.push({ path: `blog/${id}` })
-    }
   }
 }
 </script>
