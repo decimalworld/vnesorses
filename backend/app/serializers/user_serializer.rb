@@ -18,7 +18,7 @@
 #  updated_at             :datetime         not null
 #
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :token, :created_at, :updated_at
+  attributes :id, :email, :token, :avatar_link, :created_at, :updated_at
   attribute :confirmation_token, if: :id_previously_changed?
 
   delegate :id_previously_changed?, to: :object

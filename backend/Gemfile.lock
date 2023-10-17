@@ -367,7 +367,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   google-cloud-storage
-  googleauth
+  jwt
   kaminari
   mailtrap
   pg (~> 1.1)

@@ -1,7 +1,7 @@
 <template>
   <div class="dropdown">
     <div class="email">
-      <InlineSvg :src="userLoggedin" class="icon"></InlineSvg>
+      <img :src="user.avatar_link" class="icon"/>
       <span>
         {{ truncatedEmail }}
       </span>
@@ -22,11 +22,6 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: "dropdown",
-  data(){
-    return {
-      userLoggedin: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/user_loggedin_icon.svg`,
-    }
-  }, 
   computed: {
     ...mapGetters(["user"]),
     truncatedEmail() {

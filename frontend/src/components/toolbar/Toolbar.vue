@@ -51,7 +51,7 @@
           <div class="text">Đăng nhập</div>
         </div>
         <div v-else class="right-tab loggedin" @click="displayDropdown=!displayDropdown">
-          <InlineSvg :src="userLoggedin" class="icon"></InlineSvg>
+          <img :src="user.avatar_link" class="icon"/>
           <InlineSvg :src="downArrow" class="icon"></InlineSvg>
           <Dropdown v-show="displayDropdown" @mouseleave="displayDropdown=false"></Dropdown>
         </div>
@@ -70,7 +70,6 @@ import { mapGetters } from 'vuex';
 import moment from 'moment'
 import Dropdown from './Dropdown.vue';
 import Border from '../common/Border.vue';
-import router from '@/router';
 export default {
   name: "toolbar",
   components: { Dropdown, Border },
@@ -79,7 +78,6 @@ export default {
       date: moment().format('dddd, DD/M/YYYY'),
       notification: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/notification_icon.svg`,
       userIcon: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/user_icon.svg`,
-      userLoggedin: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/user_loggedin_icon.svg`,
       search: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/search_icon.svg`,
       baseBash: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/base_bash_icon.svg`,
       location: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/location_icon.svg`,

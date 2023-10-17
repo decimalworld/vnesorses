@@ -17,3 +17,16 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
+
+require 'rails_helper'
+
+RSpec.describe User do
+  let(:user) { create(:user) }
+
+  describe 'association' do
+    it do
+      expect(user).to have_one(:user_profile).dependent(:destroy)
+      expect(user).to delegate_method(:avatar_link).to(:user_profile)
+    end
+  end
+end

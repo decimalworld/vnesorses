@@ -94,9 +94,9 @@ export default {
 
 <style scoped lang="scss">
 .category-group {
-  margin: 15px 15px;
-  padding: 0px 5px;
-  height: 350px;
+  margin: 15px 0px;
+  padding: 0px 0px;
+  height: 310px;
   width: 100%;
   .tag-link-group {
     display: flex;
@@ -178,12 +178,12 @@ export default {
       }
     }
     .title-blogs{
-      height: 140px;
+      height: auto;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       .title-blog {
         display: flex;
-        margin: 25px 15px;
+        margin: 20px 15px;
       }
     }
   }

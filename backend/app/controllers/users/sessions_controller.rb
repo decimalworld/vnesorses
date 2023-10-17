@@ -4,9 +4,11 @@ module Users
   class SessionsController < Devise::SessionsController
     def create
       self.resource = warden.authenticate(auth_options)
-      raise ErrorHandler::Unauthorized, I18n.t('authentication.invalid') unless user_signed_in?
+
+      raise ErrorHandler::Unauthorized, I18n.t('authentication.invalid') unless resource
 
       sign_in(resource_name, resource)
+
       respond_with(resource)
     end
 

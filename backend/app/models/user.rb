@@ -23,9 +23,14 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
   attr_reader :token
 
+  has_one :user_profile, dependent: :destroy
+
+  delegate :avatar_link, to: :user_profile
+
   validates :email, presence: true
   validates :email, uniqueness: true
   before_commit :skip_confirmation_notification!
+  before_commit :create_user_profile, if: :id_previously_changed?
 
   def on_jwt_dispatch(token, _payload)
     @token = "Bearer #{token}"

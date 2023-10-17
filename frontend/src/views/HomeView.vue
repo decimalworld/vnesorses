@@ -22,10 +22,16 @@
       <HotNews v-if="hotNews" :hotNews="hotNews"></HotNews>
       <Border direction="left"/>
       <div class="categorized-news">
-      <div class="categories">
-        <CategoryGroup :category="categories.find((category) => category.name === 'Kinh doanh')"/>
-        <Border direction="bottom"/>
-      </div>
+        <template v-for="(categoryName, index) in displayCategories">
+          <div class="category-container">
+            <CategoryGroup :category="categories.find((category) => category.name === categoryName)"/>
+              <Border direction="bottom"/>
+          </div>
+          <div class="category-ads" v-if="index===0">
+            <div class="ads"></div>
+            <Border direction="bottom"/>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -53,6 +59,12 @@ export default {
   data() {
     return {
       categories: CATEGORIES,
+      displayCategories: [
+        'Kinh doanh', 
+        'Kinh doanh', 
+        'Kinh doanh',
+        'Kinh doanh'
+      ],
       spotlightNew: null,
       titleNews: null,
       hotNews: null,
@@ -131,6 +143,21 @@ export default {
     display: grid;
     margin: 10px 0px;
     grid-template-columns: 36.5% 0px auto;
+    .category-container{
+      padding: 0px 20px;
+    }
+    .category-ads{
+      width: auto;
+      padding: 0px 20px;
+      display: flex;
+      flex-direction: column;
+      .ads{
+        margin: 15px 0px;
+        height: 100px;
+        width: 100%;
+        background-color: blue;
+      }
+    }
   }
 }
 </style>

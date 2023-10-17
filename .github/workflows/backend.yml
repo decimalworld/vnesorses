@@ -10,7 +10,6 @@ env:
   SERVICE: backend
   PROJECT_ID: vnesorses
   REPOSITORY: deployment
-
 jobs:
   build-backend:
     permissions:
@@ -33,6 +32,7 @@ jobs:
           DB_PASSWORD=${{ secrets.DB_TEST_PASSWORD }}
           DB_TEST=${{ secrets.DB_TEST }}
           FRONTEND_URL=${{ secrets.FRONTEND_URL }}
+          USER_AVATAR_DEFAULT=${{ secrets.USER_AVATAR_DEFAULT }}
     - name: Setup test
       run: docker run ${{ env.TEST_TAG }} rails db:prepare
     - name: Run tests
@@ -54,6 +54,7 @@ jobs:
           DB_PASSWORD=${{ secrets.DB_DEV_PASSWORD }}
           DB_DEV=${{ secrets.DB_DEV }}
           FRONTEND_URL=${{ secrets.FRONTEND_URL }}
+          USER_AVATAR_DEFAULT=${{ secrets.USER_AVATAR_DEFAULT }}
     - name: Google Auth
       id: auth
       uses: 'google-github-actions/auth@v1'

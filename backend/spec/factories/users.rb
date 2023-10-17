@@ -22,5 +22,9 @@ FactoryBot.define do
     email { Faker::Internet.email }
     password { 'password' }
     password_confirmation { 'password' }
+
+    after(:build) do |user, _evaluator|
+      user.confirm
+    end
   end
 end
