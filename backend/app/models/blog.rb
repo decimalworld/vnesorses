@@ -13,8 +13,8 @@
 #  tag_id     :uuid
 #
 class Blog < ApplicationRecord
-  has_one :cover, class_name: Images::Cover.name, dependent: :destroy
-  has_many :images, class_name: Images::Body.name, dependent: :destroy
+  has_one :cover, as: :imageable, class_name: Images::Cover.name, dependent: :destroy
+  has_many :images, as: :imageable, class_name: Images::Body.name, dependent: :destroy
   belongs_to :tag, optional: true
 
   validates :title, presence: true, on: :update

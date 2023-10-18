@@ -1,19 +1,33 @@
 # frozen_string_literal: true
 
 class CreateBlogService < BaseService
+  attr_reader :blog
+
   def execute(body_image_count, tag_name)
     ActiveRecord::Base.transaction do
-      blog = Tag
-             .find_by!(name: tag_name)
-             .blogs
-             .create!
+      @blog = Tag
+              .find_by!(name: tag_name)
+              .blogs
+              .create!
       Image.import!(
-        ([{ type: Images::Body.name, blog_id: blog.id }] * body_image_count.to_i)
-        .append({ type: Images::Cover.name, blog_id: blog.id }),
+        [
+          *create_images(Images::Body.name, body_image_count),
+          *create_images(Images::Cover.name, 1)
+        ],
         all_or_none: true
       )
 
       blog
     end
+  end
+
+  private
+
+  def create_images(type, amount)
+    [{
+      type: type,
+      imageable_id: blog.id,
+      imageable_type: blog.class.name
+    }] * amount.to_i
   end
 end

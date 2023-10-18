@@ -4,16 +4,17 @@
 #
 # Table name: images
 #
-#  id         :uuid             not null, primary key
-#  blog_id    :uuid
-#  type       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id             :uuid             not null, primary key
+#  type           :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  imageable_type :string
+#  imageable_id   :uuid
 #
 class Image < ApplicationRecord
   after_destroy :remove_cloud_image
 
-  belongs_to :blog
+  belongs_to :imageable, polymorphic: true, optional: true
   attr_reader :signed_url
 
   def base_path
@@ -35,9 +36,12 @@ class Image < ApplicationRecord
   end
 
   def remove_cloud_image
-    BUCKET.file full_path
-    file.delete
-
-    Rails.logger.debug { "Deleted #{file.name}" }
+    file = BUCKET.file full_path
+    if file
+      file&.delete
+      Rails.logger.debug { "Deleted #{file.name}" }
+    else
+      Rails.logger.debug { 'File did not exist' }
+    end
   end
 end

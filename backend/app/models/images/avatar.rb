@@ -12,7 +12,11 @@
 #  imageable_id   :uuid
 #
 module Images
-  class Cover < Image
-    DIR = 'covers'
+  class Avatar < Image
+    DIR = 'avatars'
+
+    def self.default
+      find(ENV.fetch('USER_AVATAR_DEFAULT'))
+    end
   end
 end

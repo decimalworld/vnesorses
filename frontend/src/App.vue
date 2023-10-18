@@ -65,6 +65,9 @@ export default {
   height: 100vh;
   overflow: hidden;
 }
+#app-content{
+  zoom: 80%;
+}
 </style>
 
 <style lang="scss" scoped>

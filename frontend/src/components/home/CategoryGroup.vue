@@ -96,7 +96,7 @@ export default {
 .category-group {
   margin: 15px 0px;
   padding: 0px 0px;
-  height: 310px;
+  height: auto;
   width: 100%;
   .tag-link-group {
     display: flex;
@@ -121,7 +121,7 @@ export default {
     }
   }
   .tag-latest-news{
-    height: 100%;
+    height: auto;
     .latest-container {
       display: grid;
       grid-template-columns: 520px 0px auto;

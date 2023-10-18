@@ -29,7 +29,12 @@ services:
   db:
     image: postgres
     volumes:
-      - ./tmp/db:/var/lib/postgres/data
+      - /var/run/postgresql:/var/run/postgresql
+      - ./tmp/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
     environment:
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: password
+      PGDATA: /data/postgres
