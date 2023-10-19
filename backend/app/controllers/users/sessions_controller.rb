@@ -5,7 +5,7 @@ module Users
     def create
       self.resource = warden.authenticate(auth_options)
 
-      raise ErrorHandler::Unauthorized, I18n.t('authentication.invalid') unless resource
+      raise ErrorHandler::Unauthorized, I18n.t('authentication.invalid_resource') unless resource
 
       sign_in(resource_name, resource)
 

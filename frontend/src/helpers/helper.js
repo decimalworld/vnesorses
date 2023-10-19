@@ -9,6 +9,9 @@ const helper = {
   },
   goToTag(category_url_name, tag_url_name) {
     router.push({ name: `tag`, params: { category: category_url_name, tag: tag_url_name } })
+  },
+  goToProfile() {
+    router.push({ name: "userProfile" })
   }
 }
 

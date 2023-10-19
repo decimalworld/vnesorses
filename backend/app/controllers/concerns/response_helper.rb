@@ -15,7 +15,7 @@ module ResponseHelper
     {
       status_code: 200,
       message: options[:message] || 'Successful',
-      data.class.model_name.human.downcase => serialized_data
+      data.class.model_name.name.underscore => serialized_data
     }
   end
 

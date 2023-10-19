@@ -67,6 +67,7 @@ export default {
 }
 #app-content{
   zoom: 80%;
+  height: 100%;
 }
 </style>
 
@@ -86,6 +87,7 @@ export default {
   display: flex;
   flex-direction: column;
   .content {
+    min-height: 100%;
     height: auto;
     margin: 0px 0px;
     top: 100px;

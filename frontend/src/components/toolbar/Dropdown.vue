@@ -7,21 +7,27 @@
       </span>
     </div>
     <div class="border"></div>
-    <div class="option">Thông tin chung</div>
-    <div class="option">Ý kiến của bạn</div>
-    <div class="option">Tin đã lưu</div>
-    <div class="option">Tin đã xem</div>
+    <ClickableTitle 
+      text="Thông tin chung" 
+      class="option"
+      @click="helpers.goToProfile"
+    />
+    <ClickableTitle text="Ý kiến của bạn" class="option"/>
+    <ClickableTitle text="Tin đã lưu" class="option"/>
+    <ClickableTitle text="Tin đã xem" class="option"/>
     <div class="border"></div>
-    <div class="option">Thoát</div>
+    <ClickableTitle text="Thoát" class="option"/>
   </div>
 </template>
 
 <script>
-import { GCLOUD_URL, VUE_APP_ASSETS_DIR } from '@/constants';
 import { mapGetters } from 'vuex';
+import ClickableTitle from '../common/ClickableTitle.vue';
 
 export default {
   name: "dropdown",
+  inject: ["helpers"],
+  components: { ClickableTitle },
   computed: {
     ...mapGetters(["user"]),
     truncatedEmail() {
@@ -34,7 +40,7 @@ export default {
 <style scoped lang="scss">
 .dropdown {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   top: 55px;
   left: -130px;
   height: 365px;

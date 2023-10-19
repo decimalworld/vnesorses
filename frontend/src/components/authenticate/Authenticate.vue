@@ -60,7 +60,7 @@ export default {
   width: 100%;
   background-color: rgba($color: #000000, $alpha: 0.5);
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   top: 0;
   display: flex;
   .modal {

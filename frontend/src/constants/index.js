@@ -10,6 +10,9 @@ const GCLOUD_URL = `${VUE_APP_STORAGE_URL}/${VUE_APP_BUCKET_NAME}`
 const CATEGORIES = (await axios.request({
       method: 'get',
       url: `${VUE_APP_BACKEND_URL}/categories`,
+      params: {
+        per: 18
+      }
 })).data.categories
 
 export {

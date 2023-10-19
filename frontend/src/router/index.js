@@ -2,7 +2,25 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import EditBlogView from '../views/EditBlogView.vue';
 import ShowBlogView from '../views/ShowBlogView.vue';
-import { BASE_URL } from '@/constants';
+import UserProfileView from '../views/UserProfileView.vue';
+import { BASE_URL, VUE_APP_BACKEND_URL } from '@/constants';
+import store from '../store';
+import axios from 'axios';
+
+const fetchUserProfile = async (to, from, next) => {
+  return await axios({
+    method: 'get',
+    headers: {
+      'Authorization': store.getters.token
+    },
+    url: `${VUE_APP_BACKEND_URL}/users/user_profiles`
+  })
+  .then(response => {
+    store.dispatch("setProfile", response.data.user_profile)
+    next()
+  })
+  .catch(err => next({ name: 'home' }))
+}
 
 const routes = [
   {
@@ -25,6 +43,11 @@ const routes = [
     path: '/blog/:id',
     name: 'showBlog',
     component: ShowBlogView
+  }, {
+    path: '/user/user-profile',
+    name: 'userProfile',
+    component: UserProfileView,
+    beforeEnter: [fetchUserProfile]
   }
 ]
 

@@ -31,4 +31,6 @@
 
 en:
   authentication:
-    invalid: "Invalid email or password"
+    invalid_resource: "Invalid email or password"
+    invalid_token: "Invalid token"
+    

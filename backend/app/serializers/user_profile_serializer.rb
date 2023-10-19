@@ -19,19 +19,12 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
-class UserProfile < ApplicationRecord
-  belongs_to :user
+class UserProfileSerializer < ActiveModel::Serializer
+  attributes :id, :email, :account_name, :name, :two_fator_auth, :date_of_birth, :personal_phone, :address, :degree,
+             :job, :level, :company_expertise, :monthly_income
+  has_one :avatar
 
-  delegate :password, to: :user
-  delegate :email, to: :user
-
-  has_one :avatar, class_name: Images::Avatar.name, as: :imageable, dependent: :destroy
-
-  def avatar_link
-    avatar.full_path
-  end
-
-  def avatar
-    super || Images::Avatar.default
+  def account_name
+    object.email.match(/^[^\@]*/).to_s
   end
 end

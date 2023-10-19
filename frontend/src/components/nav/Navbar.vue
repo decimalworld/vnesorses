@@ -76,6 +76,7 @@ export default {
   margin-top: -10px;
   border-bottom: 1px solid #ccc;
   border-top: 1px solid #ccc;
+  z-index: 1;
   .container {
     width: 90%;
     height: 100%;

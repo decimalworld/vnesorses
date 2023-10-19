@@ -14,4 +14,7 @@ Rails.application.routes.draw do
     resources :spotlights, only: :index
     resources :title_news, only: :index
   end
+  namespace :users do
+    resources :user_profiles, only: :index
+  end
 end

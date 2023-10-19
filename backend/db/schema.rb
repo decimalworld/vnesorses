@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_18_041251) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_19_065156) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -66,7 +66,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_18_041251) do
     t.string "name"
     t.boolean "two_fator_auth", default: false
     t.datetime "date_of_birth"
-    t.integer "integer"
     t.string "personal_phone"
     t.string "address"
     t.string "degree"

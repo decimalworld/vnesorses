@@ -8,7 +8,6 @@
 #  name              :string
 #  two_fator_auth    :boolean          default(FALSE)
 #  date_of_birth     :datetime
-#  integer           :integer
 #  personal_phone    :string
 #  address           :string
 #  degree            :string
