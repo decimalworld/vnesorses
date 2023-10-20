@@ -27,10 +27,6 @@ class UserProfile < ApplicationRecord
 
   has_one :avatar, class_name: Images::Avatar.name, as: :imageable, dependent: :destroy
 
-  def avatar_link
-    avatar.full_path
-  end
-
   def avatar
     super || Images::Avatar.default
   end

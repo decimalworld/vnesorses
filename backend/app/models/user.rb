@@ -25,7 +25,7 @@ class User < ApplicationRecord
 
   has_one :user_profile, dependent: :destroy
 
-  delegate :avatar_link, to: :user_profile
+  delegate :avatar, to: :user_profile
 
   validates :email, presence: true
   validates :email, uniqueness: true

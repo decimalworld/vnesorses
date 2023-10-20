@@ -98,7 +98,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['toggleLoading', 'setUser']),
+    ...mapActions(['toggleLoading', 'setUser', 'setToken']),
     toggle_show_password() {
       this.show_password = !this.show_password
     },
@@ -137,6 +137,7 @@ export default {
       .then(response => {
         const data = response.data.user
         this.setUser(data);
+        this.setToken(data.token)
         this.$emit('exit')
       })
       .catch(err => {

@@ -61,10 +61,10 @@ const ImageResize = require('quill-image-resize-module').default;
 Quill.register("modules/imageResize", ImageResize);
 
 import { VueEditor } from 'vue3-editor';
-import axios from 'axios';
 import { CATEGORIES } from '@/constants';
 export default {
   name: 'EditBlogView',
+  inject: ["helpers"],
   components: { VueEditor },
   data() {
     return {
@@ -127,37 +127,15 @@ export default {
       if (this.coverUrl)
         this.coverUrl = await reducer()
         .toBlob(this.cover, { max: 250 })
-        .then(blob => {
-          const config = {
-            method: 'put',
-            maxBodyLength: Infinity,
-            headers: {
-              'Content-Type': 'image/png'
-            },
-            url: signed_url,
-            data: blob
-          };
-          return axios.request(config)
-        })
+        .then(blob => this.helpers.uploadImage(blob, signed_url))
     },
     async uploadBlogImage(images, entries) {
       const images_mapping = images.map(image => ({origin: image, entries: entries.shift()})); 
-      return Promise.all([...images_mapping.map(({origin, entries}) => {
-        return fetch(origin)
+      return Promise.all([
+        ...images_mapping.map(({origin, entries}) => fetch(origin)
         .then(res => res.blob())
-        .then(res => {
-          const config = {
-              method: 'put',
-              maxBodyLength: Infinity,
-              headers: {
-                'Content-Type': 'image/png'
-              },
-              url: entries.signed_url,
-              data: res
-            };
-          return axios.request(config)
-        })
-      })])
+        .then(blob => this.helpers.uploadImage(blob, entries.signed_url))
+      )])
       .then(res => this.blogContent = images_mapping.reduce(
         (content, {origin, entries}) => content.replace(origin, entries.full_path),
         this.blogContent

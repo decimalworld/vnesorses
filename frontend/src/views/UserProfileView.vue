@@ -1,38 +1,75 @@
 <template>
 <div>
   <div class="profile-container">
-    <div class="nav-wrapper">
-      <div class="nav-box">
-        <div class="email-box-wrapper">
-          <div class="email-box">
-            <img :src="profile.avatar.full_path" class="icon"/>
-            <div class="email">
-              <p>{{ profile.account_name }}</p>
-              <p>{{ Date.now() }}</p>
-            </div>
-          </div>
-        </div>
-        <Border direction="bottom" style="width:85%"></Border>
-        <UserNavigatable/>
-      </div>
-    </div>
+    <UserNavigatable/>
     <div class="info-box">
-
+      <div class="title">Thông tin tài khoản</div>
+      <div class="info-group">
+        <div class="header-group">
+          <div class="field">Ảnh đại diện</div>
+          <div class="link" @click="toggleAvatarChange">{{ avatarChange ? 'Đóng' : 'Thay đổi' }}</div>
+        </div>
+        <div class="content-group">
+          <template v-if="avatarChange">
+            <div class="avatar-change">
+              <div class="avatar-wrapper">
+                <img :src="newAvatarUrl" class="avatar"/>
+              </div>
+              <div class="btn-group">
+                <label
+                  for="blog-photo" 
+                  class="button"
+                  style="
+                    border: 1px solid #aaa"
+                >
+                  <span>
+                    Chọn lại ảnh
+                  </span>
+                </label>
+                <div 
+                  class="button" 
+                  style="
+                    background-color: rgb(164, 9, 40);
+                    color: #fff"
+                  @click="haveNewAvatar && updateAvatar()"
+                >
+                  <span>
+                    Lưu thay đổi
+                  </span>
+                </div>
+                <input type="file" id="blog-photo" ref="blogPhoto" accept=".png, .jpg, .jpeg" @change="fileChange">
+              </div>
+            </div>
+          </template>
+          <template v-else>
+            <div class="avatar-wrapper">
+              <img :src="profile.avatar.full_path" class="avatar"/>
+            </div>
+          </template>
+        </div>
+      </div>
+      <Border direction="bottom"/>
     </div>
   </div>
 </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import Border from '@/components/common/Border.vue';
 import UserNavigatable from '@/components/user/UserNavigatable';
+import reducer from 'image-blob-reduce';
 export default {
   name: "userProfileView",
+  inject: ["helpers"],
   components: { Border, UserNavigatable },
   data() {
     return {
-      profile: null
+      profile: null,
+      newAvatarUrl: null,
+      avatarChange: false,
+      newAvatar: null,
+      haveNewAvatar: false,
+      // newAvatarUrl: "https://storage.googleapis.com/vnesorses.appspot.com/avatars/fba71a88-f890-4300-8ade-e413cd545bc7",
       // profile: {
       //   account_name: "leminhquan8101998",
       //   avatar: {
@@ -41,8 +78,34 @@ export default {
       // }
     }
   },
+  methods: {
+    toggleAvatarChange() {
+      this.avatarChange = !this.avatarChange
+    },
+    fileChange() {
+      this.newAvatar = this.$refs.blogPhoto.files[0];
+      this.haveNewAvatar = true;
+      this.newAvatarUrl = URL.createObjectURL(this.newAvatar);
+    },
+    async updateAvatar() {
+      this.$store.dispatch('toggleLoading');
+      const profile = await this.helpers.changeAvatar(this.$store.getters.token).then(res => res.data.user_profile);
+
+      this.helpers.uploadImage(this.newAvatar, profile.avatar.signed_url)
+      .then(() => { 
+        this.profile = profile;
+        return new Promise(r => setTimeout(r, 500))
+      })
+      .then(() => {
+        this.toggleAvatarChange();
+        this.haveNewAvatar = false;
+        this.$store.dispatch('toggleLoading');
+      })
+    },
+  },
   beforeMount() {
     this.profile = this.$store.getters.profile
+    this.newAvatarUrl = this.profile.avatar.full_path
   }
 }
 </script>
@@ -53,54 +116,92 @@ export default {
     margin: 40px 160px;
     display: flex;
     justify-content: space-between;
-    .nav-wrapper {
-      height: inherit;
-      overflow: visible;
-      .nav-box{
-        z-index: 0;
-        top: 80px;
-        width: 330px;
-        height: 420px;
-        border: 1px solid #ccc;
-        position: sticky;
+    .info-box{
+      height: 1000px;
+      width: 710px;
+      .title {
+        text-align: start;
+        font-size: 28px;
+        font-weight: bold;
+      }
+      .info-group {
         display: flex;
         flex-direction: column;
-        .email-box-wrapper {
-          height: auto;
+        height: auto;
+        margin: 35px 0px;
+        .header-group {
           display: flex;
-          margin: 15px 0px;
-          justify-content: space-around;
-          .email-box {
-            margin: auto 20px;
-            height: auto;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            .icon {
-              height: 80px;
-              margin: 5px 0px;
-              width: auto;
+          justify-content: space-between;
+          font-size: 20px;
+          height: 40px;
+          .link {
+            color: #aaa;
+            text-decoration: underline;
+            &:hover{
+              cursor: pointer;
             }
-            .email {
-              margin: auto;
-              p {
-                margin: 5px 0px;
-                font-size: 20px;
-                align-items: start;
+          }
+        }
+        .content-group{
+          flex-grow: 1;
+          display: flex;
+          height: auto;
+          .avatar-wrapper{
+            height: 40px;
+            width: 40px;
+            margin: auto 0px;
+            border-radius: 50%;
+            overflow: hidden;
+            .avatar {
+              height: inherit;
+              width: inherit;
+            }
+          }
+          .avatar-change {
+            height: 225px;
+            width: 100%;
+            background-color: #f6f6f6;
+            border: 1px dotted #ccc;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            .avatar-wrapper{
+              height: 80px;
+              width: 80px;
+              margin: 0px auto;
+              border-radius: 50%;
+              overflow: hidden;
+              .avatar {
+                height: inherit;
+                width: inherit;
+              }
+            }
+            .btn-group{
+              height: 60px;
+              display: flex;
+              margin: 0 auto;
+              gap: 20px;
+              .button {
+                width: 200px;
                 display: flex;
+                background-color: #fff;
+                border-radius: 5px;
+                &:hover {
+                  cursor: pointer;
+                }
+                span {
+                  margin: auto;
+                  font-size: 20px;
+                }
               }
-              :first-child {
-                font-weight: bold;
-              }
+            }
+            input {
+              display: none
             }
           }
         }
       }
-    }
-    .info-box{
-      height: 1000px;
-      width: 710px;
-      background-color: green;
     }
   }
 </style>

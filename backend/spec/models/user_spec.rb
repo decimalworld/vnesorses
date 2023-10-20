@@ -26,7 +26,7 @@ RSpec.describe User do
   describe 'association' do
     it do
       expect(user).to have_one(:user_profile).dependent(:destroy)
-      expect(user).to delegate_method(:avatar_link).to(:user_profile)
+      expect(user).to delegate_method(:avatar).to(:user_profile)
     end
   end
 end

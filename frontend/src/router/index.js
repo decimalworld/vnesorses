@@ -13,7 +13,7 @@ const fetchUserProfile = async (to, from, next) => {
     headers: {
       'Authorization': store.getters.token
     },
-    url: `${VUE_APP_BACKEND_URL}/users/user_profiles`
+    url: `${VUE_APP_BACKEND_URL}/users/user_profile`
   })
   .then(response => {
     store.dispatch("setProfile", response.data.user_profile)
@@ -60,7 +60,14 @@ const router = createRouter({
     return {
       el: "#app-content"
     }
-  }
+  },
+})
+
+router.beforeEach((to, from, next) => {
+  // if (from.name == 'userProfile') {
+  //   location.reload()
+  // }
+  next()
 })
 
 export default router

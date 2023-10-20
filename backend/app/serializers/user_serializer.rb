@@ -19,7 +19,16 @@
 #
 class UserSerializer < ActiveModel::Serializer
   attributes :id, :email, :token, :avatar_link, :created_at, :updated_at
+  attribute :token, unless: :token_blank?
   attribute :confirmation_token, if: :id_previously_changed?
 
   delegate :id_previously_changed?, to: :object
+
+  def avatar_link
+    object.avatar.full_path
+  end
+
+  def token_blank?
+    object.token.blank?
+  end
 end

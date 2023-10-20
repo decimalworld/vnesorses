@@ -31,5 +31,6 @@ Devise.setup do |config|
   config.jwt do |jwt|
     jwt.secret = Rails.application.credentials.devise_jwt_secret
     jwt.algorithm = 'HS256'
+    jwt.expiration_time = 86400
   end
 end

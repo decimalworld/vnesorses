@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 module Users
-  class UserProfilesController < ApplicationController
+  class IdentitiesController < ApplicationController
     before_action :authorize_user!
 
     def show
-      data = current_user.user_profile
       render json: json_with_success(
-        data,
+        current_user,
         {
-          serializer: UserProfileSerializer
+          serializer: UserSerializer
         }
       )
     end

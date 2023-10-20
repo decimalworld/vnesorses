@@ -1,36 +1,108 @@
 <template>
-  <div class="navigate-group">
-    <div :class="this.$route.name=='userProfile' ? 'disable' : 'navigate'">Thông tin chung</div>
-    <div class="navigate">Ý kiến của bạn</div>
-    <div class="navigate">Tin đã lưu</div>
-    <div class="navigate">Tin đã xem</div>
-    <div class="navigate">Thoát</div>
+  <div class="nav-wrapper">
+    <div class="nav-box">
+      <div class="email-box-wrapper">
+        <div class="email-box">
+          <div class="avatar-wrapper">
+            <img :src="profile.avatar.full_path" class="avatar"/>
+          </div>
+          <div class="email">
+            <p>{{ profile.account_name }}</p>
+            <p>{{ Date.now() }}</p>
+          </div>
+        </div>
+      </div>
+      <Border direction="bottom" style="width:85%"></Border>
+      <div class="navigate-group">
+        <div :class="this.$route.name=='userProfile' ? 'disable' : 'navigate'">Thông tin chung</div>
+        <div class="navigate">Ý kiến của bạn</div>
+        <div class="navigate">Tin đã lưu</div>
+        <div class="navigate">Tin đã xem</div>
+        <div class="navigate">Thoát</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "userNavigatable"
+  name: "userNavigatable",
+  data() {
+    return {
+      profile: this.$store.getters.profile
+    }
+  },
 }
 </script>
 
 <style scoped lang="scss">
-.navigate-group {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 100%;
-  margin: 0px 25px;
-  text-align: start;
-  font-size: 20px;
-  .navigate {
-    &:hover{
-      color: rgb(255, 0, 76);
+.nav-wrapper {
+      height: inherit;
+      overflow: visible;
+      .nav-box{
+        z-index: 0;
+        top: 80px;
+        width: 330px;
+        height: 420px;
+        border: 1px solid #ccc;
+        position: sticky;
+        display: flex;
+        flex-direction: column;
+        .email-box-wrapper {
+          height: auto;
+          display: flex;
+          margin: 15px 0px;
+          justify-content: space-around;
+          .email-box {
+            margin: auto 20px;
+            height: auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            .avatar-wrapper{
+
+              height: 80px;
+              width: 80px;
+              margin: 5px 0px;
+              border-radius: 50%;
+              overflow: hidden;
+              .avatar {
+                height: inherit;
+                width: inherit;
+              }
+            }
+            .email {
+              margin: auto;
+              p {
+                margin: 5px 0px;
+                font-size: 20px;
+                align-items: start;
+                display: flex;
+              }
+              :first-child {
+                font-weight: bold;
+              }
+            }
+          }
+        }
+        .navigate-group {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          width: 100%;
+          margin: 0px 25px;
+          text-align: start;
+          font-size: 20px;
+          .navigate {
+            &:hover{
+              color: rgb(255, 0, 76);
+            }
+          }
+          .disable {
+            font-weight: bold;
+          }
+        }
+      }
     }
-  }
-  .disable {
-    font-weight: bold;
-  }
-}
 </style>

@@ -24,6 +24,7 @@ import Preview from './components/Preview';
 import Authenticate from './components/authenticate/Authenticate';
 export default {
   name: "App",
+  inject: ["helpers"],
   components: { Navbar, Footer, Loading, Preview, DropBar, Toolbar, Authenticate },
   computed: {
     ...mapGetters(['loading', 'preview', 'dropVisible'])
@@ -34,13 +35,24 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setMasterScroll']),
+    ...mapActions(['setMasterScroll', 'setUser', 'deleteToken']),
+    ...mapGetters(['token']),
     hideAuthent() {
       this.showAuthent = false
     },
     displayAuthent() {
       this.showAuthent = true
     }
+  },
+  beforeMount() {
+    const token = this.token();
+    if (token)
+      this.helpers.getIdentity(token)
+      .then(res => this.setUser(res.data.user))
+      .catch(() => {
+        console.clear();
+        this.deleteToken;
+      })
   },
   mounted() {
     const el = this.$refs.appContent

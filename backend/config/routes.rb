@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     resources :title_news, only: :index
   end
   namespace :users do
-    resources :user_profiles, only: :index
+    resource :user_profile, only: :show
+    resource :avatar, only: :update
+    resource :identity, only: :show
   end
 end

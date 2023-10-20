@@ -1,4 +1,6 @@
-import router from "@/router"
+import { VUE_APP_BACKEND_URL } from "@/constants";
+import router from "@/router";
+import axios from "axios";
 
 const helper = {
   goToBlog(id) {
@@ -12,6 +14,36 @@ const helper = {
   },
   goToProfile() {
     router.push({ name: "userProfile" })
+  },
+
+  async uploadImage(blob, signedUrl) {
+    axios({
+      method: 'put',
+      maxBodyLength: Infinity,
+      headers: {
+        'Content-Type': 'image/png'
+      },
+      url: signedUrl,
+      data: blob
+    });
+  },
+  async changeAvatar(token) {
+    return axios({
+      method: 'put',
+      headers: {
+        'Authorization': token
+      },
+      url: `${VUE_APP_BACKEND_URL}/users/avatar`
+    });
+  },
+  async getIdentity(token) {
+    return axios({
+      method: 'get',
+      headers: {
+        'Authorization': token
+      },
+      url: `${VUE_APP_BACKEND_URL}/users/identity`
+    });
   }
 }
 
