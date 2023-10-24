@@ -44,6 +44,16 @@ const helper = {
       },
       url: `${VUE_APP_BACKEND_URL}/users/identity`
     });
+  },
+  async updateProfile(token, data) {
+    return axios({
+      method: 'put',
+      headers: {
+        'Authorization': token
+      },
+      url: `${VUE_APP_BACKEND_URL}/users/user_profile`,
+      data
+    })
   }
 }
 

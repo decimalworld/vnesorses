@@ -7,6 +7,8 @@ module Users
 
       raise ErrorHandler::Unauthorized, I18n.t('authentication.invalid_resource') unless resource
 
+      Rails.logger.debug resource.as_json
+
       sign_in(resource_name, resource)
 
       respond_with(resource)

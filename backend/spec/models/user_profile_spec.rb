@@ -29,7 +29,6 @@ RSpec.describe UserProfile do
       expect(user_profile).to belong_to(:user)
       expect(user_profile).to have_one(:avatar).dependent(:destroy)
       expect(user_profile).to delegate_method(:email).to(:user)
-      expect(user_profile).to delegate_method(:password).to(:user)
     end
   end
 end

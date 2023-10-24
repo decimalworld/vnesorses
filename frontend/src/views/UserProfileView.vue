@@ -4,51 +4,49 @@
     <UserNavigatable/>
     <div class="info-box">
       <div class="title">Thông tin tài khoản</div>
-      <div class="info-group">
-        <div class="header-group">
-          <div class="field">Ảnh đại diện</div>
-          <div class="link" @click="toggleAvatarChange">{{ avatarChange ? 'Đóng' : 'Thay đổi' }}</div>
-        </div>
-        <div class="content-group">
-          <template v-if="avatarChange">
-            <div class="avatar-change">
-              <div class="avatar-wrapper">
-                <img :src="newAvatarUrl" class="avatar"/>
-              </div>
-              <div class="btn-group">
-                <label
-                  for="blog-photo" 
-                  class="button"
-                  style="
-                    border: 1px solid #aaa"
-                >
-                  <span>
-                    Chọn lại ảnh
-                  </span>
-                </label>
-                <div 
-                  class="button" 
-                  style="
-                    background-color: rgb(164, 9, 40);
-                    color: #fff"
-                  @click="haveNewAvatar && updateAvatar()"
-                >
-                  <span>
-                    Lưu thay đổi
-                  </span>
-                </div>
-                <input type="file" id="blog-photo" ref="blogPhoto" accept=".png, .jpg, .jpeg" @change="fileChange">
+      <div class="info-group" :key="infoGroupKey">
+        <AvatarField :avatar="profile?.avatar"/>
+        <Border direction="bottom"/>
+        <UserProfileField label="Họ tên" :value="profile.name">
+          <div class="info-change">
+            <div class="data-group">
+              <div class="label">Nhập họ tên</div>
+              <input type="text" placeholder="Nhập họ tên" v-model="changed.name">
+            </div>
+            <div class="button-group">
+              <div 
+                class="button" 
+                :style="nameChanged ? 'background-color: rgb(161, 5, 52); color:#fff': 'background-color: #eee;'"
+                @click="nameChanged && updateData()"
+              >
+                <span>Đổi tên</span>
               </div>
             </div>
-          </template>
-          <template v-else>
-            <div class="avatar-wrapper">
-              <img :src="profile.avatar.full_path" class="avatar"/>
+          </div>
+        </UserProfileField>
+        <Border direction="bottom"/>
+        <UserProfileField label="Email" :value="profile.email">
+          <div class="info-change">
+            <div class="data-group">
+              <div class="label">Nhập mật khẩu hiện tại</div>
+              <input type="password" placeholder="Nhập mật khẩu" v-model="changed.password_confirmation">
             </div>
-          </template>
-        </div>
+            <div class="data-group">
+              <div class="label">Nhập email mới</div>
+              <input type="text" placeholder="Nhập email mới" v-model="changed.email">
+            </div>
+            <div class="button-group">
+              <div 
+                class="button" 
+                :style="emailChanged ? 'background-color: rgb(161, 5, 52); color:#fff': 'background-color: #eee;'"
+                @click="emailChanged && updateData()"
+              >
+                <span>Đổi email</span>
+              </div>
+            </div>
+          </div>
+        </UserProfileField>
       </div>
-      <Border direction="bottom"/>
     </div>
   </div>
 </div>
@@ -56,12 +54,14 @@
 
 <script>
 import Border from '@/components/common/Border.vue';
+import AvatarField from '@/components/user/AvatarField.vue';
 import UserNavigatable from '@/components/user/UserNavigatable';
-import reducer from 'image-blob-reduce';
+import UserProfileField from '@/components/user/UserProfileField.vue';
+import { mapActions } from 'vuex';
 export default {
   name: "userProfileView",
   inject: ["helpers"],
-  components: { Border, UserNavigatable },
+  components: { Border, UserNavigatable, AvatarField, UserProfileField, Border, UserProfileField },
   data() {
     return {
       profile: null,
@@ -69,43 +69,60 @@ export default {
       avatarChange: false,
       newAvatar: null,
       haveNewAvatar: false,
-      // newAvatarUrl: "https://storage.googleapis.com/vnesorses.appspot.com/avatars/fba71a88-f890-4300-8ade-e413cd545bc7",
-      // profile: {
-      //   account_name: "leminhquan8101998",
-      //   avatar: {
-      //     full_path: "https://storage.googleapis.com/vnesorses.appspot.com/avatars/fba71a88-f890-4300-8ade-e413cd545bc7"
-      //   }
-      // }
+      infoGroupKey: 0,
+      changed: {
+        name: '',
+        email: '',
+        password_confirmation: ''
+      },
+    }
+  },
+  computed: {
+    profile: {
+      get() {
+        return this.$store.getters.profile
+      },
+      set(value) {
+        this.setProfile(value)
+      }
+    },
+    nameChanged: {
+      get() {
+        return this.changed.name.length !==0
+      }
+    },
+    emailChanged: {
+      get() {
+        return this.changed.email.length !==0
+      }
     }
   },
   methods: {
-    toggleAvatarChange() {
-      this.avatarChange = !this.avatarChange
-    },
-    fileChange() {
-      this.newAvatar = this.$refs.blogPhoto.files[0];
-      this.haveNewAvatar = true;
-      this.newAvatarUrl = URL.createObjectURL(this.newAvatar);
-    },
-    async updateAvatar() {
-      this.$store.dispatch('toggleLoading');
-      const profile = await this.helpers.changeAvatar(this.$store.getters.token).then(res => res.data.user_profile);
+    ...mapActions(['setProfile', 'toggleLoading']),
+    async updateData() {
+      this.toggleLoading();
+      const data = Object.keys(this.changed).reduce((acc, key) => {
+        if (this.changed[key].length !==0) {
+          acc[key] = this.changed[key]
+        }
+        return acc;
+      }, {})
+      const token = this.$store.getters.token;
+      const newProfile = await this.helpers.updateProfile(token, data).then(res => res.data.user_profile)
+      this.setProfile(newProfile);
+      this.infoGroupKey += 1;
+      this.changed = {
+        name: '',
+        email: '',
+        password_confirmation: '',
 
-      this.helpers.uploadImage(this.newAvatar, profile.avatar.signed_url)
-      .then(() => { 
-        this.profile = profile;
-        return new Promise(r => setTimeout(r, 500))
-      })
-      .then(() => {
-        this.toggleAvatarChange();
-        this.haveNewAvatar = false;
-        this.$store.dispatch('toggleLoading');
-      })
-    },
+      }
+      this.toggleLoading();
+    }
   },
   beforeMount() {
-    this.profile = this.$store.getters.profile
-    this.newAvatarUrl = this.profile.avatar.full_path
+    const profile = this.$store.getters.profile
+    this.newAvatarUrl = profile.avatar.full_path
   }
 }
 </script>
@@ -129,75 +146,43 @@ export default {
         flex-direction: column;
         height: auto;
         margin: 35px 0px;
-        .header-group {
-          display: flex;
-          justify-content: space-between;
-          font-size: 20px;
-          height: 40px;
-          .link {
-            color: #aaa;
-            text-decoration: underline;
-            &:hover{
-              cursor: pointer;
-            }
-          }
-        }
-        .content-group{
-          flex-grow: 1;
-          display: flex;
+        gap: 35px;
+        .info-change {
+          background-color: #f6f6f6;
           height: auto;
-          .avatar-wrapper{
-            height: 40px;
-            width: 40px;
-            margin: auto 0px;
-            border-radius: 50%;
-            overflow: hidden;
-            .avatar {
-              height: inherit;
-              width: inherit;
-            }
-          }
-          .avatar-change {
-            height: 225px;
-            width: 100%;
-            background-color: #f6f6f6;
-            border: 1px dotted #ccc;
-            border-radius: 10px;
+          width: inherit;
+          display: flex;
+          flex-direction: column;
+          border-radius: 5px;
+          padding: 20px;
+          gap: 30px;
+          .data-group {
+            gap: 10px;
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
-            .avatar-wrapper{
-              height: 80px;
-              width: 80px;
-              margin: 0px auto;
-              border-radius: 50%;
-              overflow: hidden;
-              .avatar {
-                height: inherit;
-                width: inherit;
-              }
-            }
-            .btn-group{
-              height: 60px;
-              display: flex;
-              margin: 0 auto;
-              gap: 20px;
-              .button {
-                width: 200px;
-                display: flex;
-                background-color: #fff;
-                border-radius: 5px;
-                &:hover {
-                  cursor: pointer;
-                }
-                span {
-                  margin: auto;
-                  font-size: 20px;
-                }
-              }
-            }
+            color: black;
             input {
-              display: none
+              font-size: 20px;
+              height: 60px;
+              border: solid 1px #eee;
+              border-radius: 5px;
+              padding: 0px 15px;
+              box-sizing: border-box;
+            }
+          }
+          .button-group {
+            display: flex;
+            .button{
+              height: 55px;
+              width: 100px;
+              display: flex;
+              border-radius: 5px;
+              &:hover{
+                cursor: pointer;
+              }
+              span {
+                margin: auto;
+              }
             }
           }
         }

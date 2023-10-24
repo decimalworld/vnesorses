@@ -22,7 +22,7 @@
 class UserProfile < ApplicationRecord
   belongs_to :user
 
-  delegate :password, to: :user
+  delegate :valid_password?, to: :user
   delegate :email, to: :user
 
   has_one :avatar, class_name: Images::Avatar.name, as: :imageable, dependent: :destroy
