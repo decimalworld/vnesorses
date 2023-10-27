@@ -1,6 +1,5 @@
 <template>
   <div :class="showAuthent ? 'stop-scroll' : 'scrollable'" ref="appContent" id="app-content">
-    <Loading v-if="loading"/>
     <Preview v-if="preview"/>
     <Authenticate v-if="showAuthent" @exit="hideAuthent"/>
     <Toolbar @click-authen="displayAuthent"></Toolbar>
@@ -10,6 +9,8 @@
       <router-view class="content"/>
       <Footer/>
     </div>
+    <!-- <Confirmation/> -->
+    <Loading v-if="loading"/>
   </div>
 </template>
 
@@ -22,10 +23,11 @@ import Toolbar from './components/toolbar/Toolbar';
 import Loading from './components/Loading';
 import Preview from './components/Preview';
 import Authenticate from './components/authenticate/Authenticate';
+import Confirmation from './components/Confirmation.vue';
 export default {
   name: "App",
   inject: ["helpers"],
-  components: { Navbar, Footer, Loading, Preview, DropBar, Toolbar, Authenticate },
+  components: { Navbar, Footer, Loading, Preview, DropBar, Toolbar, Authenticate, Confirmation },
   computed: {
     ...mapGetters(['loading', 'preview', 'dropVisible'])
   }, 

@@ -33,7 +33,7 @@ module Users
     end
 
     def update_profile_params
-      params.permit(:name)
+      params.permit(:name, :date_of_birth, :personal_phone)
     end
 
     def update_user_params

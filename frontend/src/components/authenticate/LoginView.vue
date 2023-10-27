@@ -2,112 +2,87 @@
   <div class="login-view">
     <div class="login-content">
       <div class="view-wrapper">
-        <div class="title">
-          <span>Đăng nhập với email</span>
-        </div>
-        <input 
-          type="text" 
-          class="text-input" 
-          placeholder="Email" 
-          v-model="email" 
+        <CustomTitle>
+          Đăng nhập với email
+        </CustomTitle>
+        <CustomInput
+          type="text"
+          placeholder="Email"
+          v-model:inputModel="email"
           @keyup="validate_email"
         />
         <div class="error-field">
-          <span>
             {{ email_error }}
-          </span>
         </div>
-        <div class="password-wrapper">
-          <input 
-            :type="show_password ? 'text' : 'password'" 
-            class="text-input" 
-            placeholder="Mật khẩu" 
-            v-model="password"
-            @keyup="validate_password"
-          >
-          <InlineSvg :src="show_password ? eye_off : eye_on" class="show-icon" @click="toggle_show_password"></InlineSvg>
-        </div>
+        <CustomPassword 
+          v-model:password="password"
+          v-model:passwordError="passwordError"
+        />
         <div class="error-field">
-          <span>
-            {{ password_error }}
-          </span>
+            {{ passwordError }}
         </div>
-        <div 
-          :class="`button clickable ${submitable() ? 'login-true' : 'login-false'}`"
+        <CustomButton 
+          :class="`clickable ${submitable() ? 'login-true' : 'login-false'}`"
           @click="submitable() && login()"
         >
-          <span>Đăng nhập</span>
-        </div>
-        <div class="button forgot-password">
-          <span class="clickable">Lấy lại mật khẩu</span>
-        </div>
+          Đăng nhập
+        </CustomButton>
+        <CustomButton class="forgot-password">
+          Lấy lại mật khẩu
+        </CustomButton>
       </div>
       <div class="border">
   
       </div>
       <div class="view-wrapper">
-        <div class="title">
-          <span>Đăng nhập với</span>
-        </div>
-        <div class="button social facebook">
-          <span>
-            <InlineSvg :src="facebook" class="icon"></InlineSvg>
-            Facebook
-          </span>
-        </div>
-        <div class="button social google">
-          <span>
-            <InlineSvg :src="google" class="icon"></InlineSvg>
-            Google
-          </span>
-        </div>
-        <div class="button social apple">
-          <span>
-            <InlineSvg :src="apple" class="icon"></InlineSvg>
+        <CustomTitle>
+          Đăng nhập với
+        </CustomTitle>
+        <CustomButton class="social facebook">
+          <CustomIcon src="facebook_icon.svg" class="icon"/>
+          Facebook
+        </CustomButton>
+        <CustomButton class="social google">
+          <CustomIcon src="google_icon.svg" class="icon"/>
+          Google
+        </CustomButton>
+        <CustomButton class="social apple">
+            <CustomIcon src="apple_icon.svg" class="icon"/>
             Apple
-          </span>
-        </div>
+        </CustomButton>
       </div>
     </div>
-    <div class="footer">
-      <span>
-        Bạn đăng nhập là đồng ý với <em>điều khoản sử dụng</em> và <em>chính sách bảo mật</em> của VnExpress & được bảo vệ bởi reCAPTCHA
-      </span>
-    </div>
+    <AuthenFooter>
+      Bạn đăng nhập là đồng ý với <em>điều khoản sử dụng</em> và <em>chính sách bảo mật</em> của VnExpress & được bảo vệ bởi reCAPTCHA
+    </AuthenFooter>
   </div>
 </template>
 
 <script>
-import { GCLOUD_URL, VUE_APP_ASSETS_DIR, VUE_APP_BACKEND_URL } from '@/constants';
+import { VUE_APP_BACKEND_URL } from '@/constants';
 import { mapActions } from 'vuex';
 import axios from 'axios';
+import AuthenFooter from './AuthenFooter';
+import CustomTitle from './CustomTitle';
+import CustomButton from '../common/CustomButton.vue';
+import CustomInput from './CustomInput';
+import CustomIcon from '../common/CustomIcon';
+import CustomPassword from './CustomPassword';
 export default {
   name: "LoginView",
+  components: { AuthenFooter, CustomTitle, CustomButton, CustomInput, CustomIcon, CustomPassword },
   data() {
     return {
-      facebook: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/facebook_icon.svg`,
-      google: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/google_icon.svg`,
-      apple: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/apple_icon.svg`,
-      eye_on: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/eye_on_icon.svg`,
-      eye_off: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/eye_off_icon.svg`,
       email: '',
       email_error: '',
       password: '',
-      password_error: '',
-      show_password: false,
+      passwordError: '',
     }
   },
   methods: {
     ...mapActions(['toggleLoading', 'setUser', 'setToken']),
     toggle_show_password() {
       this.show_password = !this.show_password
-    },
-    validate_password() {
-      if (this.password.length < 6) {
-        this.password_error = 'Mật khẩu phải nhiều hơn 6 chữ cái'
-      } else {
-        this.password_error = ''
-      }
     },
     validate_email() {
       if (!this.email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)){
@@ -118,7 +93,7 @@ export default {
     },
     submitable() {
       return (
-        !(this.password_error || this.email_error) 
+        !(this.passwordError || this.email_error) 
         && this.email && this.password && true
       )
     },
@@ -153,56 +128,15 @@ export default {
 <style scoped lang="scss">
 .login-view {
   height: 100%;
-  display: flex;
-  flex-direction: column;
   .login-content {
     display: grid;
     grid-template-columns: 53% 0% 47%;
     .view-wrapper {
-      height: 100%;
-      width: 100%;
-      display: block;
-      .title {
-        height: 90px;
-        width: 100%;
-        display: flex;
-        span {
-          margin: auto;
-          font-size: 18px;
-        }
-      }
-      .password-wrapper {
-        position: relative;
-        .show-icon {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          right: 12%;
-          height: 20px;
-          width: auto;
-          margin: auto 0;
-          &:hover {
-            cursor: pointer;
-          }
-        }
-      }
-      .text-input {
-        height: 50px;
-        width: 80%;
-        margin: 0 10%;
-        padding: 0 15px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        font-size: 18px;
-        box-sizing: border-box;
-      }
       .error-field {
-        height: 45px;
-        display: flex;
-        span {
-          margin: auto 10%;
-          color: red;
-        }
+        text-align: start;
+        height: 18px;
+        padding: 13px 50px;
+        color: red;
       }
       .login-false {
         color: #fff;
@@ -214,90 +148,40 @@ export default {
         background-color: rgb(161, 5, 52);
         font-weight: bold;
       }
-      .button {
-        height: 50px;
-        width: 80%;
-        margin: auto;
-        border-radius: 5px;
-        font-size: 18px;
-        display: flex;
-        &:hover {
-          cursor: pointer;
-        }
-        span {
-          margin: auto;
-        }
-      }
       .forgot-password {
         color: #aaa;
         &:hover{
           cursor: context-menu;
         }
+        span:hover {
+          cursor: pointer;
+        }
       }
       .social {
         font-weight: bold;
         margin-bottom: 30px;
-        span {
-          left: 0;
-          width: 100%;
-          margin-left: 0;
-          padding: auto;
-          position: relative;
-        }
       }
       .facebook {
         border: 1px solid rgb(29, 2, 182);
         color: rgb(29, 2, 182);
-        
       }
       .google {
         border: 1px solid rgb(0, 119, 255);
         color: rgb(0, 119, 255);
-        font-weight: bold;
       }
       .apple {
         border: 1px solid black;
         color: black;
-        font-weight: bold;
-        margin-bottom: 0px;
+      }
+      .icon {
+        left: 15px;
       }
     }
     .border {
-      margin-top: 35px;
-      margin-bottom: 30px;
+      margin: 35px 0;
       border-left: 1px solid #ccc;
-      height: 83%;
+      height: 85%;
     }
-    .clickable {
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-  .footer {
-    height: 100%;
-    display: flex;
-    span {
-      margin: auto 95px;
-      color: #aaa;
-      em {
-        text-decoration: underline;
-        font-style: normal;
-        color: rgb(9, 114, 212);
-        &:hover {
-          cursor: pointer;
-        }
-      }
-    }
-  }
-  .icon {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 15px;
-    height: 20px;
-    width: auto;
-    margin: auto 0;
   }
 }
 </style>

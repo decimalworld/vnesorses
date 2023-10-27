@@ -5,7 +5,10 @@
         <div class="text"> 
           <div class="content">Tất cả chuyên mục</div> 
         </div>
-        <Button class="button" @click="hideDrop"></Button>
+        <CustomButton class="button" @click="hideDrop">
+          Đóng
+          <InlineSvg :src="exit" class="icon"/>
+        </CustomButton>
       </div>
       <Categories></Categories>
     </div>
@@ -13,14 +16,20 @@
 </template>
 
 <script>
-import Button from './Button.vue';
+import CustomButton from '../common/CustomButton';
 import Categories from './Categories.vue';
 import { mapActions } from 'vuex';
+import { GCLOUD_URL, VUE_APP_ASSETS_DIR } from '@/constants';
 export default {
   name: "DropBar",
-  components: { Button, Categories },
+  components: { Categories, CustomButton },
   methods: {
     ...mapActions(['hideDrop'])
+  },
+  data() {
+    return {
+      exit: `${GCLOUD_URL}/${VUE_APP_ASSETS_DIR}/basic_exit_icon.svg`
+    }
   }
 }
 </script>
@@ -39,7 +48,6 @@ export default {
     .drop-title {
       height: 55px;
       width: 100%;
-      display: block;
       border-bottom: 1px solid #303030;
       .text {
         float: left;
@@ -55,6 +63,12 @@ export default {
       };
       .button {
         float: right;
+        width: 100px;
+        .icon {
+          margin: auto;
+          height: 15px;
+          width: auto;
+        }
       }
     }
   }

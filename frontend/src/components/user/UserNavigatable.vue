@@ -8,7 +8,7 @@
           </div>
           <div class="email">
             <p>{{ profile.account_name }}</p>
-            <p>{{ Date.now() }}</p>
+            <p>{{ `Tham gia từ ${parseDate(profile.created_at)}` }}</p>
           </div>
         </div>
       </div>
@@ -25,13 +25,21 @@
 </template>
 
 <script>
+import moment from 'moment';
+import Border from '../common/Border.vue';
 export default {
   name: "userNavigatable",
+  components: { Border },
   data() {
     return {
-      profile: this.$store.getters.profile
+      profile: this.$store.getters.profile,
     }
   },
+  methods: {
+    parseDate(date){
+      return moment(date).format('M/YYYY')
+    }
+  }
 }
 </script>
 
@@ -58,7 +66,7 @@ export default {
             height: auto;
             width: 100%;
             display: flex;
-            justify-content: space-between;
+            gap: 15px;
             .avatar-wrapper{
 
               height: 80px;
@@ -72,14 +80,15 @@ export default {
               }
             }
             .email {
-              margin: auto;
+              margin: auto 0px;
               p {
                 margin: 5px 0px;
-                font-size: 20px;
+                font-size: 16px;
                 align-items: start;
                 display: flex;
               }
               :first-child {
+                font-size: 20px;
                 font-weight: bold;
               }
             }
@@ -96,6 +105,7 @@ export default {
           font-size: 20px;
           .navigate {
             &:hover{
+              cursor: pointer;
               color: rgb(255, 0, 76);
             }
           }

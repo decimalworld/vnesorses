@@ -111,6 +111,7 @@ export default {
     }
     .tag-link{
       margin: 0px 10px;
+      padding: 6px 0px;
       font-size: 15px;
       display: flex;
       font-weight: normal !important;

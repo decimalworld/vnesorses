@@ -3,7 +3,7 @@
       class="clickable"
   >
     <li v-if="listItem"></li>
-    <span>{{ text }}</span>
+    {{ text }}
   </div>
 </template>
 
