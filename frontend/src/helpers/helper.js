@@ -54,6 +54,18 @@ const helper = {
       url: `${VUE_APP_BACKEND_URL}/users/user_profile`,
       data
     })
+  },
+  async logout(token) {
+    await axios({
+      method: 'delete',
+      headers: {
+        'Authorization': token
+      },
+      url: `${VUE_APP_BACKEND_URL}/users/sign_out`
+    })
+    router
+    .push({ name: 'home' })
+    .then(() => router.go())
   }
 }
 

@@ -16,7 +16,7 @@
     <ClickableTitle text="Tin đã lưu" class="option"/>
     <ClickableTitle text="Tin đã xem" class="option"/>
     <div class="border"></div>
-    <ClickableTitle text="Thoát" class="option"/>
+    <ClickableTitle text="Thoát" class="option" @click="helpers.logout(token)"/>
   </div>
 </template>
 
@@ -29,7 +29,7 @@ export default {
   inject: ["helpers"],
   components: { ClickableTitle },
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "token"]),
     truncatedEmail() {
       return this.user.email.match(/^[^@]*/)[0]
     }

@@ -5,7 +5,9 @@ shared_context 'when login' do
   let(:jwt_token) do
     JWT.encode({
                  'sub' => current_user.id,
-                 'scp' => 'user'
+                 'scp' => 'user',
+                 'iat' => 1_698_633_203,
+                 'jti' => SecureRandom.uuid
                }, Rails.application.credentials.devise_jwt_secret)
   end
 

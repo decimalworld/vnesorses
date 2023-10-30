@@ -20,7 +20,10 @@ const getters = {
 const actions = {
   setUser: ({ commit }, user) => commit('setUser', user),
   setProfile: ({ commit }, userProfile) => commit('setProfile', userProfile),
-  deleteToken: () => jsCookie.delete('token'),
+  deleteToken: ({ state }) => {
+    jsCookie.remove('token')
+    state.token = null
+  },
   setToken: ({ commit }, token) => {
     jsCookie.set('token', token, { expires: 1 });
     commit('setToken', token);

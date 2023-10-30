@@ -53,7 +53,7 @@ export default {
       .then(res => this.setUser(res.data.user))
       .catch(() => {
         console.clear();
-        this.deleteToken;
+        this.deleteToken();
       })
   },
   mounted() {

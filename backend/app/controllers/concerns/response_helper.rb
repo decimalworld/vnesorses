@@ -5,17 +5,24 @@ module ResponseHelper
 
   def json_with_success(data, options = {})
     serialized_data =
-      ActiveModelSerializers::SerializableResource.new(
-        data,
+      begin
         {
-          include: '**',
-          **options
+          data.class.model_name.name.underscore =>
+          ActiveModelSerializers::SerializableResource.new(
+            data,
+            {
+              include: '**',
+              **options
+            }
+          )
         }
-      )
+      rescue NoMethodError
+        {}
+      end
     {
       status_code: 200,
       message: options[:message] || 'Successful',
-      data.class.model_name.name.underscore => serialized_data
+      **serialized_data
     }
   end
 

@@ -2,7 +2,7 @@
 
 module Users
   class UserProfilesController < ApplicationController
-    before_action :authorize_user!
+    before_action :authenticate_user!
     before_action :confirm_password!, only: :update
 
     def show

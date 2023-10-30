@@ -18,7 +18,7 @@
         <div class="navigate">Ý kiến của bạn</div>
         <div class="navigate">Tin đã lưu</div>
         <div class="navigate">Tin đã xem</div>
-        <div class="navigate">Thoát</div>
+        <div class="navigate" @click="helpers.logout">Thoát</div>
       </div>
     </div>
   </div>
@@ -29,6 +29,7 @@ import moment from 'moment';
 import Border from '../common/Border.vue';
 export default {
   name: "userNavigatable",
+  inject: ["helpers"],
   components: { Border },
   data() {
     return {
