@@ -20,5 +20,6 @@ Rails.application.routes.draw do
     resource :user_profile, only: [:show, :update]
     resource :avatar, only: :update
     resource :identity, only: :show
+    resource :comments, only: :create
   end
 end

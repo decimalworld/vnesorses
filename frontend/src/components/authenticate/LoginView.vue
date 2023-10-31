@@ -9,10 +9,10 @@
           type="text"
           placeholder="Email"
           v-model:inputModel="email"
-          @keyup="validate_email"
+          @input="validateEmail"
         />
         <div class="error-field">
-            {{ email_error }}
+            {{ emailError }}
         </div>
         <CustomPassword 
           v-model:password="password"
@@ -74,26 +74,23 @@ export default {
   data() {
     return {
       email: '',
-      email_error: '',
+      emailError: '',
       password: '',
       passwordError: '',
     }
   },
   methods: {
     ...mapActions(['toggleLoading', 'setUser', 'setToken']),
-    toggle_show_password() {
-      this.show_password = !this.show_password
-    },
-    validate_email() {
+    validateEmail() {
       if (!this.email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)){
-        this.email_error = 'Email không hợp lệ'
+        this.emailError = 'Email không hợp lệ'
       } else {
-        this.email_error=''
+        this.emailError=''
       }
     },
     submitable() {
       return (
-        !(this.passwordError || this.email_error) 
+        !(this.passwordError || this.emailError) 
         && this.email && this.password && true
       )
     },
@@ -110,14 +107,15 @@ export default {
         }
       })
       .then(response => {
-        const data = response.data.user
+        const data = response.data.user;
         this.setUser(data);
-        this.setToken(data.token)
-        this.$emit('exit')
+        this.setToken(data.token);
+        this.$emit('exit');
+        this.$router.go(0);
       })
       .catch(err => {
-        console.clear()
-        this.email_error = err.response.data.error_message
+        console.clear();
+        this.emailError = err.response.data.error_message;
       })
       .then(this.toggleLoading)
     }

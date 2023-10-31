@@ -3,9 +3,7 @@
     <div class="nav-box">
       <div class="email-box-wrapper">
         <div class="email-box">
-          <div class="avatar-wrapper">
-            <img :src="profile.avatar.full_path" class="avatar"/>
-          </div>
+          <Avatar :src="profile.avatar.full_path" />
           <div class="email">
             <p>{{ profile.account_name }}</p>
             <p>{{ `Tham gia từ ${parseDate(profile.created_at)}` }}</p>
@@ -27,10 +25,11 @@
 <script>
 import moment from 'moment';
 import Border from '../common/Border.vue';
+import Avatar from '../common/Avatar.vue';
 export default {
   name: "userNavigatable",
   inject: ["helpers"],
-  components: { Border },
+  components: { Border, Avatar },
   data() {
     return {
       profile: this.$store.getters.profile,

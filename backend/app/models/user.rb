@@ -24,6 +24,7 @@ class User < ApplicationRecord
   attr_reader :token
 
   has_one :user_profile, dependent: :destroy
+  has_many :comments, dependent: :nullify
 
   delegate :avatar, to: :user_profile
 
@@ -31,6 +32,11 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
   before_commit :skip_confirmation_notification!
   before_commit :create_user_profile, if: :id_previously_changed?
+
+  enum status: {
+    active: 0,
+    deactived: 1
+  }
 
   def on_jwt_dispatch(token, _payload)
     @token = "Bearer #{token}"

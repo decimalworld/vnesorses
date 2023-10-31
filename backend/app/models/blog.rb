@@ -15,6 +15,7 @@
 class Blog < ApplicationRecord
   has_one :cover, as: :imageable, class_name: Images::Cover.name, dependent: :destroy
   has_many :images, as: :imageable, class_name: Images::Body.name, dependent: :destroy
+  has_many :comments, dependent: :nullify
   belongs_to :tag, optional: true
 
   validates :title, presence: true, on: :update
@@ -24,6 +25,11 @@ class Blog < ApplicationRecord
     normal: 0,
     spotlight: 1,
     title_news: 2
+  }
+
+  enum status: {
+    active: 0,
+    deactived: 1
   }
 
   def summary
@@ -52,5 +58,13 @@ class Blog < ApplicationRecord
   def generate_signed_url
     cover.generate_signed_url
     images.each(&:generate_signed_url)
+  end
+
+  def soft_delete
+    transaction do
+      cover.destroy
+      images.destroy_all
+      deactived!
+    end
   end
 end

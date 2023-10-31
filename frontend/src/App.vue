@@ -7,9 +7,14 @@
     <DropBar v-show="dropVisible"></DropBar>
     <div class="container" v-show="!dropVisible">
       <router-view class="content"/>
+    </div>
+    <Border direction="bottom"/>
+    <div class="container" v-if="this.$route.name === 'showBlog'">
+      <CommentSection/>
+    </div>
+    <div class="container">
       <Footer/>
     </div>
-    <!-- <Confirmation/> -->
     <Loading v-if="loading"/>
   </div>
 </template>
@@ -24,20 +29,24 @@ import Loading from './components/Loading';
 import Preview from './components/Preview';
 import Authenticate from './components/authenticate/Authenticate';
 import Confirmation from './components/Confirmation.vue';
+import Border from './components/common/Border.vue';
+import CommentSection from './components/blog/CommentSection.vue';
+
 export default {
   name: "App",
   inject: ["helpers"],
-  components: { Navbar, Footer, Loading, Preview, DropBar, Toolbar, Authenticate, Confirmation },
+  components: { Navbar, Footer, Loading, Preview, DropBar, Toolbar, Authenticate, Confirmation, Border, CommentSection },
   computed: {
     ...mapGetters(['loading', 'preview', 'dropVisible'])
   }, 
   data() {
     return {
-      showAuthent: false
+      showAuthent: false,
+      pathName: '',
     }
   },
   methods: {
-    ...mapActions(['setMasterScroll', 'setUser', 'deleteToken']),
+    ...mapActions(['setMasterScroll', 'setUser', 'deleteToken', 'setProfile']),
     ...mapGetters(['token']),
     hideAuthent() {
       this.showAuthent = false
@@ -46,11 +55,17 @@ export default {
       this.showAuthent = true
     }
   },
-  beforeMount() {
+  async beforeMount() {
     const token = this.token();
     if (token)
-      this.helpers.getIdentity(token)
-      .then(res => this.setUser(res.data.user))
+      Promise.all([
+        this.helpers.getIdentity(token),
+        this.helpers.getProfile(token)
+      ])
+      .then(res => {
+        this.setUser(res[0].data.user);
+        this.setProfile(res[1].data.user_profile);
+      })
       .catch(() => {
         console.clear();
         this.deleteToken();

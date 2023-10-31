@@ -45,6 +45,25 @@ const helper = {
       url: `${VUE_APP_BACKEND_URL}/users/identity`
     });
   },
+  async getProfile(token){
+    return axios({
+      method: 'get',
+      headers: {
+        'Authorization': token
+      },
+      url: `${VUE_APP_BACKEND_URL}/users/user_profile`
+    })
+  },
+  async postComment(token, comment){
+    return axios({
+      method: 'post',
+      headers: {
+        'Authorization': token
+      },
+      url: `${VUE_APP_BACKEND_URL}/users/comments`,
+      data: comment
+    })
+  },
   async updateProfile(token, data) {
     return axios({
       method: 'put',
@@ -65,7 +84,7 @@ const helper = {
     })
     router
     .push({ name: 'home' })
-    .then(() => router.go())
+    .then(() => router.go(0))
   }
 }
 

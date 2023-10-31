@@ -55,7 +55,6 @@ export default {
   height: 550px;
   width: 825px;
   .modal-tab-group {
-    height: 65px;
     display: grid;
     grid-template-columns: 50% 50%;
     .modal-tab {

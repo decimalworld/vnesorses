@@ -19,6 +19,7 @@ RSpec.describe Blog do
 
   describe 'validation' do
     it do
+      expect(blog).to have_many(:comments).dependent(:nullify)
       expect(blog).to validate_presence_of(:title).on(:update)
       expect(blog).to validate_presence_of(:body).on(:update)
     end

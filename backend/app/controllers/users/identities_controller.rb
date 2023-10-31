@@ -2,7 +2,7 @@
 
 module Users
   class IdentitiesController < ApplicationController
-    before_action :authorize_user!
+    before_action :authenticate_user!
 
     def show
       render json: json_with_success(

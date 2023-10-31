@@ -1,7 +1,5 @@
 <template>
-  <div :class="`border-${direction}`">
-
-  </div>
+    <div :class="`border-${direction}`"></div>
 </template>
 
 <script>
@@ -17,14 +15,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.border-bottom{
-  width: 98%;
-  border-bottom: 1px solid #ccc;
-  margin: 0 auto;
-}
-.border-left{
-  height: 98%;
-  border-left: 1px solid #ccc;
-  margin: auto 0;
-}
+  .border-bottom{
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    margin: 0 auto;
+  }
+  .border-left{
+    height: 100%;
+    border-left: 1px solid #ccc;
+    margin: auto 0;
+  }
 </style>
