@@ -51,7 +51,7 @@
           <div class="text">Đăng nhập</div>
         </div>
         <div v-else class="right-tab loggedin" @click="displayDropdown=!displayDropdown">
-          <img :src="user.avatar_link" class="icon"/>
+          <Avatar :src="user.avatar_link" class="avatar"/>
           <InlineSvg :src="downArrow" class="icon"></InlineSvg>
           <Dropdown v-show="displayDropdown" @mouseleave="displayDropdown=false"></Dropdown>
         </div>
@@ -67,12 +67,13 @@
 <script>
 import { GCLOUD_URL, VUE_APP_ASSETS_DIR } from '@/constants';
 import { mapGetters } from 'vuex';
+import Avatar from '../common/Avatar.vue';
 import moment from 'moment'
 import Dropdown from './Dropdown.vue';
 import Border from '../common/Border.vue';
 export default {
   name: "toolbar",
-  components: { Dropdown, Border },
+  components: { Dropdown, Border, Avatar },
   data() {
     return {
       date: moment().format('dddd, DD/M/YYYY'),
@@ -178,6 +179,11 @@ export default {
     margin: auto;
     height: 20px;
     width: auto;
+  }
+  .avatar {
+    margin: auto;
+    height: 30px;
+    width: 30px;
   }
 }
 </style>

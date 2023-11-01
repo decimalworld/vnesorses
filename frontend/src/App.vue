@@ -5,16 +5,12 @@
     <Toolbar @click-authen="displayAuthent"></Toolbar>
     <Navbar/>
     <DropBar v-show="dropVisible"></DropBar>
-    <div class="container" v-show="!dropVisible">
-      <router-view class="content"/>
-    </div>
-    <Border direction="bottom"/>
-    <div class="container" v-if="this.$route.name === 'showBlog'">
-      <CommentSection/>
-    </div>
-    <div class="container">
+
+    <router-view class="content" v-show="!dropVisible"/>
+
+    <Container>
       <Footer/>
-    </div>
+    </Container>
     <Loading v-if="loading"/>
   </div>
 </template>
@@ -31,11 +27,12 @@ import Authenticate from './components/authenticate/Authenticate';
 import Confirmation from './components/Confirmation.vue';
 import Border from './components/common/Border.vue';
 import CommentSection from './components/blog/CommentSection.vue';
+import Container from './components/common/Container.vue';
 
 export default {
   name: "App",
   inject: ["helpers"],
-  components: { Navbar, Footer, Loading, Preview, DropBar, Toolbar, Authenticate, Confirmation, Border, CommentSection },
+  components: { Navbar, Footer, Loading, Preview, DropBar, Toolbar, Authenticate, Confirmation, Border, CommentSection, Container },
   computed: {
     ...mapGetters(['loading', 'preview', 'dropVisible'])
   }, 
@@ -108,18 +105,5 @@ export default {
 .scrollable {
   height: 100%;
   overflow-y: scroll;
-}
-.container {
-  width: 73.5%;
-  height: auto;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  .content {
-    min-height: 100%;
-    height: auto;
-    margin: 0px 0px;
-    top: 100px;
-  }
 }
 </style>

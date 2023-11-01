@@ -40,7 +40,8 @@ export default {
   top: 50px;
   width: 100%;
   background-color: #fff;
-  height: 92vh;
+  z-index: 1;
+  height: 100%;
   .drop-container {
     width: 72%;
     height: 100%;

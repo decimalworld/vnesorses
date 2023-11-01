@@ -27,6 +27,7 @@ class User < ApplicationRecord
   has_many :comments, dependent: :nullify
 
   delegate :avatar, to: :user_profile
+  delegate :name, to: :user_profile
 
   validates :email, presence: true
   validates :email, uniqueness: true

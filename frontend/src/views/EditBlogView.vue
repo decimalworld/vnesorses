@@ -1,57 +1,62 @@
 <template>
-  <div class="edit-blog-view">
-    <div class="edit-blog">
-      <div class="cover-group">
-        <label for="blog-photo" class="clickable upload-button">Upload Cover Photo</label>
-        <input type="file" id="blog-photo" ref="blogPhoto" accept=".png, .jpg, .jpeg" @change="fileChange">
-        <div class="file-info">File Chosen: {{ coverChosen }}</div>
-        <div class="select-wrapper">
-          <div class="select-label">Tag: </div>
-          <select v-model="tag_name">
-            <option disabled value="">Please select one</option>
-            <template v-for="category in categories">
-              <option disabled value="" class="category-marker">{{ category.name }}</option>
-              <option v-for="(tag, index2) in category.tags" :value="tag.name" :key="index2">{{ tag.name }}</option>
-            </template>
-          </select>
+  <Container>
+
+    <div class="edit-blog-view">
+
+      <div class="edit-blog">
+        <div class="cover-group">
+          <label for="blog-photo" class="clickable upload-button">Upload Cover Photo</label>
+          <input type="file" id="blog-photo" ref="blogPhoto" accept=".png, .jpg, .jpeg" @change="fileChange">
+          <div class="file-info">File Chosen: {{ coverChosen }}</div>
+          <div class="select-wrapper">
+            <div class="select-label">Tag: </div>
+            <select v-model="tag_name">
+              <option disabled value="">Please select one</option>
+              <template v-for="category in categories">
+                <option disabled value="" class="category-marker">{{ category.name }}</option>
+                <option v-for="(tag, index2) in category.tags" :value="tag.name" :key="index2">{{ tag.name }}</option>
+              </template>
+            </select>
+          </div>
         </div>
-      </div>
-      <div class="title-group">
-        <textarea 
-          placeholder="Enter Blog Title" 
-          v-model="blogTitle" 
-          class="title"
-          ref="title"
-          rows="1"
-          @input="resizTitle"
-        />
-      </div>
-      <VueEditor 
-        v-model="blogContent" 
-        :editorOptions="editorOptions"
-      >
-    
-      </VueEditor>
-      <div class="router-group">
-        <div 
-          :class="`clickable ${cover ? '' : 'inactive'}`"
-          @click="cover && togglePreview()"  
+        <div class="title-group">
+          <textarea 
+            placeholder="Enter Blog Title" 
+            v-model="blogTitle" 
+            class="title"
+            ref="title"
+            rows="1"
+            @input="resizTitle"
+          />
+        </div>
+        <VueEditor 
+          v-model="blogContent" 
+          :editorOptions="editorOptions"
         >
-          Preview Cover
-        </div>
-        <div class="clickable" @click="publish">
-          Publish Blog
-        </div>
-        <div class="clickable">
-          Cancel
+      
+        </VueEditor>
+        <div class="router-group">
+          <div 
+            :class="`clickable ${cover ? '' : 'inactive'}`"
+            @click="cover && togglePreview()"  
+          >
+            Preview Cover
+          </div>
+          <div class="clickable" @click="publish">
+            Publish Blog
+          </div>
+          <div class="clickable">
+            Cancel
+          </div>
         </div>
       </div>
+      <div class="side-content"></div>
     </div>
-    <div class="side-content"></div>
-  </div>
+  </Container>
 </template>
 
 <script>
+import Container from '@/components/common/Container.vue';
 import Quill from 'quill';
 import reducer from 'image-blob-reduce';
 import { mapActions, mapGetters } from 'vuex';
@@ -65,7 +70,7 @@ import { CATEGORIES } from '@/constants';
 export default {
   name: 'EditBlogView',
   inject: ["helpers"],
-  components: { VueEditor },
+  components: { VueEditor, Container },
   data() {
     return {
       cover: '',

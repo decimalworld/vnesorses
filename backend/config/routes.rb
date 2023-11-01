@@ -8,9 +8,6 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     confirmations: 'users/confirmations'
   }
-  resources :categories, only: :index do
-    post :blogs, on: :member
-  end
   namespace :blogs do
     resources :commons, only: %i(index show create update)
     resources :spotlights, only: :index
@@ -21,5 +18,12 @@ Rails.application.routes.draw do
     resource :avatar, only: :update
     resource :identity, only: :show
     resource :comments, only: :create
+  end
+
+  resources :categories, only: :index do
+    post :blogs, on: :member
+  end
+  resources :blogs do
+    resources :comments, only: :index, module: :blogs
   end
 end

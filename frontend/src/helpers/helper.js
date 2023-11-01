@@ -64,6 +64,13 @@ const helper = {
       data: comment
     })
   },
+  async getComment(blogId, options = { order: "latest" }) {
+    return axios({
+      method: 'get',
+      url: `${VUE_APP_BACKEND_URL}/blogs/${blogId}/comments`,
+      params: options
+    })
+  },
   async updateProfile(token, data) {
     return axios({
       method: 'put',

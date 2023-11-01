@@ -1,7 +1,7 @@
 <template>
   <div class="dropdown">
     <div class="email">
-      <img :src="user.avatar_link" class="icon"/>
+      <Avatar :src="user.avatar_link" class="icon"/>
       <span>
         {{ truncatedEmail }}
       </span>
@@ -23,11 +23,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickableTitle from '../common/ClickableTitle.vue';
+import Avatar from '../common/Avatar.vue';
 
 export default {
   name: "dropdown",
   inject: ["helpers"],
-  components: { ClickableTitle },
+  components: { ClickableTitle, Avatar },
   computed: {
     ...mapGetters(["user", "token"]),
     truncatedEmail() {

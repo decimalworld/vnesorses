@@ -8,4 +8,13 @@ class Comment < ApplicationRecord
     active: 0,
     deactived: 1
   }
+
+  def self.paginate_order(order)
+    case order
+    when /latest/
+      { created_at: :desc }
+    when /popular/
+      { created_at: :asc }
+    end
+  end
 end

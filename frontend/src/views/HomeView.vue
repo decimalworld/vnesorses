@@ -1,39 +1,41 @@
 <template>
   <div class="home">
-    <div class="spotlight-group">
-      <div class="spotlight-news">
-        <Spotlight v-if="spotlightNew" :blog="spotlightNew"/>
-        <Border direction="bottom"/>
-        <div class="title-news-wrapper">
-          <TitleNews 
-            v-if="titleNews"
-            v-for="(blog, index) in titleNews"
-            :key="index"
-            :blog="blog"
-          ></TitleNews>
+    <Container>
+      <div class="spotlight-group">
+        <div class="spotlight-news">
+          <Spotlight v-if="spotlightNew" :blog="spotlightNew"/>
+          <Border direction="bottom"/>
+          <div class="title-news-wrapper">
+            <TitleNews 
+              v-if="titleNews"
+              v-for="(blog, index) in titleNews"
+              :key="index"
+              :blog="blog"
+            ></TitleNews>
+          </div>
+          <Border direction="bottom"/>
         </div>
-        <Border direction="bottom"/>
+        <div class="spotlight-ads">
+          <div class="ads"></div>
+        </div>
       </div>
-      <div class="spotlight-ads">
-        <div class="ads"></div>
-      </div>
-    </div>
-    <div class="news-container">
-      <HotNews v-if="hotNews" :hotNews="hotNews"></HotNews>
-      <Border direction="left"/>
-      <div class="categorized-news">
-        <template v-for="(categoryName, index) in displayCategories">
-          <div class="category-container">
-            <CategoryGroup :category="categories.find((category) => category.name === categoryName)"/>
+      <div class="news-container">
+        <HotNews v-if="hotNews" :hotNews="hotNews"></HotNews>
+        <Border direction="left"/>
+        <div class="categorized-news">
+          <template v-for="(categoryName, index) in displayCategories">
+            <div class="category-container">
+              <CategoryGroup :category="categories.find((category) => category.name === categoryName)"/>
+                <Border direction="bottom"/>
+            </div>
+            <div class="category-ads" v-if="index===0">
+              <div class="ads"></div>
               <Border direction="bottom"/>
-          </div>
-          <div class="category-ads" v-if="index===0">
-            <div class="ads"></div>
-            <Border direction="bottom"/>
-          </div>
-        </template>
+            </div>
+          </template>
+        </div>
       </div>
-    </div>
+    </Container>
   </div>
 </template>
 
@@ -42,6 +44,7 @@ import HotNews from '@/components/home/HotNews';
 import Spotlight from '@/components/home/Spotlight';
 import TitleNews from '@/components/home/TitleNews.vue';
 import CategoryGroup from '@/components/home/CategoryGroup.vue';
+import Container from '@/components/common/Container.vue';
 
 import Border from '@/components/common/Border'
 import { CATEGORIES, VUE_APP_BACKEND_URL } from '@/constants'
@@ -54,7 +57,8 @@ export default {
     TitleNews,
     HotNews,
     Border,
-    CategoryGroup
+    CategoryGroup,
+    Container
 },
   data() {
     return {

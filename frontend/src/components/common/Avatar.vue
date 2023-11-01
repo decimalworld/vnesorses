@@ -19,10 +19,12 @@ export default {
   margin: 5px 0px;
   border-radius: 50%;
   overflow: hidden;
-  height: inherit;
+  height: 100%;
+  width: 100%;
+  display: block;
   .avatar{
-    height: inherit;
-    width: inherit;
+    height: 100%;
+    width: 100%;
   }
 }
 </style>

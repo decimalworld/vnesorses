@@ -1,28 +1,36 @@
 <template>
-<div class="show-blog-view" v-if="blog">
-  <div class="blog-view">
-    <div class="blog-container">
-      <div class="social">
-  
+  <div class="show-blog-view" v-if="blog">
+    <Container>
+      <div class="blog-view">
+        <div class="blog-container">
+          <div class="social">
+      
+          </div>
+          <BlogContent :blog="blog"/>
+        </div>
+        <div class="ads-container">
+          <div class="ads"></div>
+        </div>
       </div>
-      <BlogContent :blog="blog"/>
-    </div>
-    <div class="ads-container">
-      <div class="ads"></div>
-    </div>
+    </Container>
+    <Border direction="bottom"/>
+    <Container>
+      <CommentSection/>
+    </Container>
   </div>
-</div>
 </template>
 
 <script>
 import { VUE_APP_BACKEND_URL } from '@/constants';
 import BlogContent from '@/components/blog/BlogContent';
 import Border from '@/components/common/Border.vue';
+import Container from '@/components/common/Container.vue';
+import CommentSection from '@/components/blog/CommentSection.vue';
 import axios from 'axios';
 
 export default {
   name: "showBlogView",
-  components: { BlogContent, Border },
+  components: { BlogContent, Border, Container, CommentSection },
   data() {
     return {
       blog: null,

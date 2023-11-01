@@ -4,6 +4,6 @@ module PaginateHelper
   extend ActiveSupport::Concern
 
   def paginate_params
-    params.permit(:page, :per)
+    params.permit(:page, :per, :order)
   end
 end
