@@ -17,7 +17,7 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
-class UserSerializer < ActiveModel::Serializer
+class UserSerializer < ApplicationSerializer
   attributes :id, :email, :token, :avatar_link, :created_at, :updated_at
   attribute :token, unless: :token_blank?
   attribute :confirmation_token, if: :id_previously_changed?

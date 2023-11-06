@@ -1,5 +1,6 @@
 import { VUE_APP_BACKEND_URL } from "@/constants";
 import router from "@/router";
+import store from "@/store";
 import axios from "axios";
 
 const helper = {
@@ -27,6 +28,24 @@ const helper = {
       data: blob
     });
   },
+
+  async getIp() {
+    return axios({
+      method: 'get',
+      url: 'https://api64.ipify.org'
+    })
+  },
+  
+  async createLike(comment_id, token) {
+    let headers = {RemoteAddress: store.getters.ip}
+    if (token) { headers = { ...headers, token} }
+    return axios({
+      method: 'post',
+      headers,
+      url: `${VUE_APP_BACKEND_URL}/comments/${comment_id}/likes`,
+    })
+  },
+
   async changeAvatar(token) {
     return axios({
       method: 'put',
@@ -65,8 +84,13 @@ const helper = {
     })
   },
   async getComment(blogId, options = { order: "latest" }) {
+    let headers = {}
+    if (store.getters.token) {
+      headers = { 'Authorization': store.getters.token }
+    }
     return axios({
       method: 'get',
+      headers,
       url: `${VUE_APP_BACKEND_URL}/blogs/${blogId}/comments`,
       params: options
     })
@@ -81,6 +105,16 @@ const helper = {
       data
     })
   },
+  async updateComments(blogId, data) {
+    let headers = {"RemoteAddress": store.getters.ip }
+    if (store.getters.token) headers["Authorization"] = store.getters.token
+    return axios({
+      method: 'put',
+      headers: headers,
+      url: `${VUE_APP_BACKEND_URL}/blogs/${blogId}/comments`,
+      data
+    })
+  },
   async logout(token) {
     await axios({
       method: 'delete',
@@ -92,7 +126,7 @@ const helper = {
     router
     .push({ name: 'home' })
     .then(() => router.go(0))
-  }
+  },
 }
 
 export default helper

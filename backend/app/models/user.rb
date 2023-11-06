@@ -25,6 +25,7 @@ class User < ApplicationRecord
 
   has_one :user_profile, dependent: :destroy
   has_many :comments, dependent: :nullify
+  has_many :likes, dependent: :nullify
 
   delegate :avatar, to: :user_profile
   delegate :name, to: :user_profile

@@ -19,7 +19,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
-class UserProfileSerializer < ActiveModel::Serializer
+class UserProfileSerializer < ApplicationSerializer
   attributes  :id, :email, :account_name, :name, :two_fator_auth,
               :date_of_birth, :personal_phone,
               :address, :degree, :created_at,

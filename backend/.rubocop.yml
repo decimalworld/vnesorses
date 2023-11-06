@@ -32,3 +32,5 @@ RSpec/MultipleMemoizedHelpers:
   Enabled: false
 RSpec/ExampleLength:
   Enabled: false
+Lint/UnusedBlockArgument:
+  Enabled: false

@@ -21,7 +21,10 @@ module Blogs
     end
 
     def create
-      blog = CreateBlogService.execute(body_image_count, tag_name)
+      blog = BlogService::CreateService.execute(
+        body_image_count,
+        tag_name
+      )
       render json: json_with_success(
         blog.tap(&:generate_signed_url),
         serializer: BlogSerializer::CommonSerializer

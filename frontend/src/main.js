@@ -7,10 +7,12 @@ import helper from './helpers/helper';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
-createApp(App)
+const app = createApp(App)
 .component('InlineSvg', InlineSvg)
 .component('VueDatePicker', VueDatePicker)
 .use(store)
 .use(router)
 .provide('helpers', helper)
-.mount('#app')
+
+app.config.globalProperties.window = window
+app.mount('#app')

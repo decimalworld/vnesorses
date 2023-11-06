@@ -43,7 +43,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setMasterScroll', 'setUser', 'deleteToken', 'setProfile']),
+    ...mapActions(['setMasterScroll', 'setUser', 'deleteToken', 'setProfile', 'setIp']),
     ...mapGetters(['token']),
     hideAuthent() {
       this.showAuthent = false
@@ -53,11 +53,17 @@ export default {
     }
   },
   async beforeMount() {
+    this.helpers.getIp()
+    .then(res => this.setIp(res.data))
+    .catch(() => {
+      console.clear()
+    })
+
     const token = this.token();
     if (token)
       Promise.all([
         this.helpers.getIdentity(token),
-        this.helpers.getProfile(token)
+        this.helpers.getProfile(token),
       ])
       .then(res => {
         this.setUser(res[0].data.user);

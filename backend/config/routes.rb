@@ -23,7 +23,8 @@ Rails.application.routes.draw do
   resources :categories, only: :index do
     post :blogs, on: :member
   end
+
   resources :blogs do
-    resources :comments, only: :index, module: :blogs
+    resource :comments, only: [:show, :update], module: :blogs
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_30_035153) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_01_102354) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -62,6 +62,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_035153) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
+  end
+
+  create_table "likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "comment_id", null: false
+    t.string "ip_addr"
+    t.string "type", default: "Likes::Anonymous"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_likes_on_comment_id"
+    t.index ["ip_addr"], name: "index_likes_on_ip_addr"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

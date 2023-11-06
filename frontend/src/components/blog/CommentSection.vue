@@ -22,17 +22,12 @@
         </div>
         <Border direction="bottom"/>
         <div class="comment-group" :key="focusTab">
-          <div 
-            v-for="(comment, index) in this.existedComment"
+          <Comment 
+            v-for="(comment, index) in existedComment"
+            :comment="comment"
             :key="index"
-            class="comment"
-            >
-            <Avatar :src="comment.user.avatar" class="avatar"/>
-            <div class="content-group">
-              <a>{{ comment.user.username }}</a>
-              {{ comment.content }} 
-            </div>
-          </div>
+            @like-toggle="likeToggle(index)"
+            />
         </div>
       </div>
     </div>
@@ -46,11 +41,12 @@ import Border from '../common/Border.vue';
 import Avatar from '../common/Avatar.vue';
 import CustomButton from '../common/CustomButton';
 import CommentCreate from './CommentCreate.vue';
+import Comment from './Comment.vue';
 
 export default {
   name: "commentSection",
   inject: ["helpers"],
-  components: { Border, CustomButton, Avatar, CommentCreate },
+  components: { Border, CustomButton, Avatar, CommentCreate, Comment },
   data() {
     return {
       existedComment: [],
@@ -59,6 +55,7 @@ export default {
   },
   methods: {
     async changeToLatest() {
+      await this.updateLike()
       await this.helpers
       .getComment(this.$route.params.id, { order: "latest" })
       .then(res => {
@@ -67,16 +64,32 @@ export default {
       });
     },
     async changeToMostPopular() {
+      await this.updateLike()
       await this.helpers
       .getComment(this.$route.params.id, { order: "popular" })
       .then(res => {
         this.existedComment = res.data.comments
         this.focusTab = 0
       });
-    }
+    },
+    likeToggle(index) {
+      this.existedComment[index].like = !this.existedComment[index].like
+    },
+    async updateLike() {
+      if (Boolean(this.$store.getters.ip)) {
+        this.helpers.updateComments(this.$route.params.id, { comments: this.existedComment} )
+      }
+      return undefined
+    },
   },
+  created() {
+    window.onbeforeunload=this.updateLike
+  },  
   async beforeMount() {
     this.changeToMostPopular()
+  },
+  async beforeUnmount() {
+    this.updateLike()
   }
 }
 </script>

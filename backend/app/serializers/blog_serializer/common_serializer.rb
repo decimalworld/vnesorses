@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BlogSerializer
-  class CommonSerializer < ActiveModel::Serializer
+  class CommonSerializer < ApplicationSerializer
     attributes :id, :tag, :created_at
     has_one :cover
     has_many :images, if: :newly_created?

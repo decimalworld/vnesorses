@@ -11,7 +11,7 @@
 #  imageable_type :string
 #  imageable_id   :uuid
 #
-class ImageSerializer < ActiveModel::Serializer
+class ImageSerializer < ApplicationSerializer
   attributes :id, :full_path, :type
   attribute :signed_url, if: :with_signed_url?
 

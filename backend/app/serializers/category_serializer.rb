@@ -9,7 +9,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class CategorySerializer < ActiveModel::Serializer
+class CategorySerializer < ApplicationSerializer
   has_many :tags
   attributes :id, :name, :url_name
 

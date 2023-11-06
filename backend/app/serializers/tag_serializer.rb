@@ -10,7 +10,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-class TagSerializer < ActiveModel::Serializer
+class TagSerializer < ApplicationSerializer
   attributes :id, :name, :url_name
 
   def url_name

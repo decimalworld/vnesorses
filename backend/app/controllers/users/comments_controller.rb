@@ -9,7 +9,7 @@ module Users
       render json: json_with_success(
         comment,
         {
-          serializer: CommentSerializer
+          serializer: BlogSerializer::CommentSerializer
         }
       )
     end

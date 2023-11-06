@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BlogSerializer
-  class SummarySerializer < ActiveModel::Serializer
+  class SummarySerializer < ApplicationSerializer
     attributes :id, :summary, :title
     has_one :cover
   end
