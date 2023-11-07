@@ -29,7 +29,6 @@ class Comment < ApplicationRecord
   end
 
   def liked_by?(ip_addr: nil, user_id: nil)
-    likes.by_user(ip_addr: ip_addr).exists?
-    likes.by_user(user_id: user_id).exists?
+    likes.by_user(user_id: user_id, ip_addr: ip_addr).exists?
   end
 end

@@ -6,7 +6,7 @@
     <Navbar/>
     <DropBar v-show="dropVisible"></DropBar>
 
-    <router-view class="content" v-show="!dropVisible"/>
+    <router-view class="content" v-show="!dropVisible" v-if="loaded"/>
 
     <Container>
       <Footer/>
@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       showAuthent: false,
+      loaded: false,
       pathName: '',
     }
   },
@@ -53,8 +54,11 @@ export default {
     }
   },
   async beforeMount() {
-    this.helpers.getIp()
-    .then(res => this.setIp(res.data))
+    await this.helpers.getIp()
+    .then(res => {
+      this.setIp(res.data)
+      this.loaded = true
+    })
     .catch(() => {
       console.clear()
     })

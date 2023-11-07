@@ -55,7 +55,6 @@ export default {
   },
   methods: {
     async changeToLatest() {
-      await this.updateLike()
       await this.helpers
       .getComment(this.$route.params.id, { order: "latest" })
       .then(res => {
@@ -64,7 +63,6 @@ export default {
       });
     },
     async changeToMostPopular() {
-      await this.updateLike()
       await this.helpers
       .getComment(this.$route.params.id, { order: "popular" })
       .then(res => {
@@ -72,25 +70,19 @@ export default {
         this.focusTab = 0
       });
     },
-    likeToggle(index) {
+    async likeToggle(index) {
       this.existedComment[index].like = !this.existedComment[index].like
+      await this.updateLike(index)
     },
-    async updateLike() {
+    async updateLike(index) {
       if (Boolean(this.$store.getters.ip)) {
-        this.helpers.updateComments(this.$route.params.id, { comments: this.existedComment} )
+        this.helpers.updateComments(this.$route.params.id, { comments: [this.existedComment[index]]} )
       }
-      return undefined
     },
   },
-  created() {
-    window.onbeforeunload=this.updateLike
-  },  
   async beforeMount() {
     this.changeToMostPopular()
   },
-  async beforeUnmount() {
-    this.updateLike()
-  }
 }
 </script>
 

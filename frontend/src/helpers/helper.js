@@ -84,15 +84,23 @@ const helper = {
     })
   },
   async getComment(blogId, options = { order: "latest" }) {
-    let headers = {}
-    if (store.getters.token) {
-      headers = { 'Authorization': store.getters.token }
-    }
+    let headers = {"RemoteAddress": store.getters.ip }
+    if (store.getters.token) headers["Authorization"] = store.getters.token
     return axios({
       method: 'get',
       headers,
       url: `${VUE_APP_BACKEND_URL}/blogs/${blogId}/comments`,
       params: options
+    })
+  },
+  async updateComments(blogId, data) {
+    let headers = {"RemoteAddress": store.getters.ip }
+    if (store.getters.token) headers["Authorization"] = store.getters.token
+    return axios({
+      method: 'put',
+      headers,
+      url: `${VUE_APP_BACKEND_URL}/blogs/${blogId}/comments`,
+      data
     })
   },
   async updateProfile(token, data) {
@@ -102,16 +110,6 @@ const helper = {
         'Authorization': token
       },
       url: `${VUE_APP_BACKEND_URL}/users/user_profile`,
-      data
-    })
-  },
-  async updateComments(blogId, data) {
-    let headers = {"RemoteAddress": store.getters.ip }
-    if (store.getters.token) headers["Authorization"] = store.getters.token
-    return axios({
-      method: 'put',
-      headers: headers,
-      url: `${VUE_APP_BACKEND_URL}/blogs/${blogId}/comments`,
       data
     })
   },
